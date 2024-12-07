@@ -1,0 +1,68 @@
+.main {
+    display: grid;
+    width: 100%; height: 100%;
+
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr;
+}
+
+.db-record h3 {
+    margin-left: 10px;
+}
+
+.db-record h4 {
+    margin-left: 60px;
+    display: block;
+}
+
+.db-record.minimised h4 {
+    margin-left: 60px;
+    display: none;
+}
+
+.query-entry {
+    width: 100%;
+    font-size: 1.5em;
+    overflow: hidden;
+    resize: none;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid var(--quad-color);
+    font-family: 'Montserrat', sans-serif;
+}
+
+th {
+    background-color: var(--tertiary-color);
+    color: var(--primary-color);
+    font-weight: 1000;
+    font-size: 1em;
+}
+
+td {
+    background-color: var(--secondary-color);
+    color: var(--tertiary-color);
+    overflow-wrap: break-word;
+}
+
+#results-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    overflow: scroll;
+}
+
+#query {
+    width: 100%; 
+    height: 100%;
+    padding: 25px; 
+    box-sizing: border-box;
+    overflow: hidden;
+}
