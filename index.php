@@ -46,6 +46,7 @@
 
                 <div class="main align-center justify-center">
                     <h1>Welcome to DataCat</h1>
+                    <h2><a href="app">Go to application</a></h2>
                 </div>
 
             <?php endif; ?>
