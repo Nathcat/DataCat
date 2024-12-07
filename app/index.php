@@ -99,6 +99,9 @@
                                 data_update_db_info();
 
                                 if (r.status === "success") {
+
+                                    $("#results-container").html("");
+                                    
                                     for (let i = 0; i < r.results.length; i++) {
                                         document.getElementById("results-container").innerHTML += data_create_results_table(r.results[i]);
                                     }
