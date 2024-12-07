@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="https://nathcat.net/static/css/new-common.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="/static/styles/app.css">
+    <link rel="stylesheet" href="../static/styles/app.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="/static/scripts/data.js"></script>
+    <script src="../static/scripts/data.js"></script>
 </head>
 
 <body>
@@ -91,7 +91,7 @@
                 <script>
                     $(".query-entry").on("keypress", function(e) {
                         if (e.keyCode === 13 && e.ctrlKey) {
-                            fetch("/run-query.php", {
+                            fetch("../run-query.php", {
                                 method: "POST",
                                 credentials: "include",
                                 body: $(this).val()

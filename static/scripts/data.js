@@ -10,7 +10,7 @@ function data_update_db_info() {
         });
     };
 
-    fetch("/run-query.php", {
+    fetch("../run-query.php", {
         method: "POST",
         credentials: "include",
         body: "SHOW SCHEMAS;"
@@ -29,7 +29,7 @@ function data_update_db_info() {
                 tables_query += "SHOW TABLES;";
             }
 
-            fetch("/run-query.php", {
+            fetch("../run-query.php", {
                 method: "POST",
                 credentials: "include",
                 body: tables_query
