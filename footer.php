@@ -25,6 +25,6 @@
         </a>
     </div>
     <div id="footer-copyright">
-        <p>© Nathcat 2024</p>
+        <p>© Nathcat 2025</p>
     </div>
 </div>
