@@ -25,6 +25,7 @@
         </a>
     </div>
     <div id="footer-copyright">
-        <p>© Nathcat 2025</p>
+        <p id="copyright">© Nathcat 2024 - </p>
+        <script>document.getElementById("copyright").innerText += " " + new Date().getFullYear()</script>
     </div>
 </div>
