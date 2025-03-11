@@ -21,3 +21,18 @@
     cursor: pointer;
     background: linear-gradient(45deg, #e600ff 0%, #00ccff 100%);
 }
+
+.app-record {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.app-record .delete-button {
+    opacity: 0;
+    transition-duration: 250ms;
+}
+
+.app-record:hover .delete-button {
+    opacity: 1;
+}

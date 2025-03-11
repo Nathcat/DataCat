@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>DataCat - Apps</title>
+    <title>DataCat - Leaderboards</title>
 
     <link rel="stylesheet" href="https://nathcat.net/static/css/new-common.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0&icon_names=delete" />
@@ -21,26 +21,26 @@
         <div class="main align-center">
             <?php include("../subheader.php"); ?>
 
-            <h2>Your Apps</h2>
+            <h2>Leaderboards</h2>
 
-            <div id="app-list" class="column align-center" style="width: calc(100% - 50px); margin: 25px;"></div>
+            <div id="leaderboard-list" class="column align-center" style="width: calc(100% - 50px); margin: 25px;"></div>
 
-            <a href="new">Create a new app</a>
+            <a href="new">Create a new leaderboard</a>
             
             <script>
                 let ask_delete = (id, name) => {
                     if (confirm("Are you sure you want to delete " + name + "?")) {
-                        delete_app(id, () => location.reload(), alert);
+                        delete_leaderboard(id, () => location.reload(), alert);
                     }
                 };
 
-                get_apps((apps) => {
-                    apps.forEach(element => {
-                        document.getElementById("app-list").innerHTML += "<div class='content-card app-record' style='width: 100%; margin: 10px;'><h3>" + element.name + "</h3><span class='spacer'></span><button class='delete-button' onclick=\"ask_delete(" + element.id + ", '" + element.name + "')\"><span class='material-symbols-outlined'>delete</span></button></div>";
+                get_leaderboards((lbs) => {
+                    lbs.forEach(element => {
+                        document.getElementById("leaderboard-list").innerHTML += "<div class='content-card app-record' style='width: 100%; margin: 10px;'><h3>" + element.name + "</h3><p style='margin-left: 25px;'>Belonging to <i>" + element.appName + "</i></p><span class='spacer'></span><button class='delete-button' onclick=\"ask_delete(" + element.id + ", '" + element.name + "')\"><span class='material-symbols-outlined'>delete</span></button></div>";
                     });
 
-                    if (apps.length === 0) {
-                        $("#app-list").html("<h3><i>You have no apps!</i></h3>")
+                    if (lbs.length === 0) {
+                        $("#leaderboard-list").html("<h3><i>You have no leaderboards!</i></h3>")
                     }
                 }, alert);
             </script>
