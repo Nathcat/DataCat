@@ -1,6 +1,6 @@
 <?php include("start-session.php"); ?>
 
-<div class="navbar column align-center justify-center">
+<div class="navbar column align-center justify-center" style="margin-bottom: 0px;">
     <div style="width: 100%" class="row align-center justify-center">
         <div class="column align-center justify-center">
             <h1 id="navbar-title">DataCat</h1>
