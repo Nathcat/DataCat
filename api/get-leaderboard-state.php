@@ -1,11 +1,9 @@
 <?php
-include("../start-session.php");
 
 header("Content-Type: application/json");
-
-if (!array_key_exists("user", $_SESSION)) {
-    die("{\"status\": \"fail\", \"message\": \"Not logged in.\"}");
-}
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Methods: POST");
 
 $request = json_decode(file_get_contents("php://input"), true);
 
@@ -34,7 +32,8 @@ if ($conn->connect_error) {
 
 if (array_key_exists("leaderboardId", $request)) {
     try {
-        $stmt = $conn->prepare("SELECT SSO.Users.username AS 'username', SSO.Users.fullName AS 'fullName', SSO.Users.pfpPath AS 'pfpPath', `value` FROM Leaderboards_Data JOIN SSO.Users ON `user` = SSO.Users.id WHERE leaderboard = ? ORDER BY " + $request["orderBy"]);
+        mysqli_report(MYSQLI_REPORT_ALL);
+        $stmt = $conn->prepare("SELECT SSO.Users.username AS 'username', SSO.Users.fullName AS 'fullName', SSO.Users.pfpPath AS 'pfpPath', `value` FROM Leaderboards_Data JOIN SSO.Users ON `user` = SSO.Users.id WHERE leaderboard = ? ORDER BY `value` " . $request["orderBy"]);
         $stmt->bind_param("i", $request["leaderboardId"]);
         $stmt->execute();
     
