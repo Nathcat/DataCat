@@ -1,5 +1,5 @@
 function get_apps(success_callback, fail_callback) {
-    fetch("/api/get-apps.php", {
+    fetch("/data/get-apps.php", {
         method: "GET",
         credentials: "include"
     }).then((r) => r.json()).then((r) => {
@@ -9,7 +9,7 @@ function get_apps(success_callback, fail_callback) {
 }
 
 function new_app(name, success_callback, fail_callback) {
-    fetch("/api/new-app.php", {
+    fetch("/data/new-app.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -23,7 +23,7 @@ function new_app(name, success_callback, fail_callback) {
 }
 
 function delete_app(name, success_callback, fail_callback) {
-    fetch("/api/delete-app.php", {
+    fetch("/data/delete-app.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -37,7 +37,7 @@ function delete_app(name, success_callback, fail_callback) {
 }
 
 function get_leaderboards(success_callback, fail_callback) {
-    fetch("/api/get-leaderboards.php", {
+    fetch("/data/get-leaderboards.php", {
         method: "GET",
         credentials: "include"
     }).then((r) => r.json()).then((r) => {
@@ -47,7 +47,7 @@ function get_leaderboards(success_callback, fail_callback) {
 }
 
 function new_leaderboard(name, appId, success_callback, fail_callback) {
-    fetch("/api/new-leaderboard.php", {
+    fetch("/data/new-leaderboard.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -61,7 +61,7 @@ function new_leaderboard(name, appId, success_callback, fail_callback) {
 }
 
 function delete_leaderboard(name, success_callback, fail_callback) {
-    fetch("/api/delete-leaderboard.php", {
+    fetch("/data/delete-leaderboard.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
