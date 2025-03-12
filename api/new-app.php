@@ -24,7 +24,7 @@ if ($conn->connect_error) {
 }
 
 try {
-    $stmt = $conn->prepare("INSERT INTO Apps (`owner`, `name`) VALUES (?, ?)");
+    $stmt = $conn->prepare("INSERT INTO Apps (`owner`, `name`, `apiKey`) VALUES (?, ?, SHA2(UUID(), 256))");
     $stmt->bind_param("is", $_SESSION["user"]["id"], $request["name"]);
     
     if ($stmt->execute()) {

@@ -34,9 +34,16 @@
                     }
                 };
 
+                let copy_api_key = (key) => {
+                    navigator.clipboard.writeText(key);
+                    $("#api-key-button").text("Copied!");
+
+                    setTimeout(() => { $("#api-key-button").text("Copy API key"); }, 2000);
+                };
+
                 get_apps((apps) => {
                     apps.forEach(element => {
-                        document.getElementById("app-list").innerHTML += "<div class='content-card app-record' style='width: 100%; margin: 10px;'><h3>" + element.name + "</h3><span class='spacer'></span><button class='delete-button' onclick=\"ask_delete(" + element.id + ", '" + element.name + "')\"><span class='material-symbols-outlined'>delete</span></button></div>";
+                        document.getElementById("app-list").innerHTML += "<div class='content-card app-record' style='width: 100%; margin: 10px;'><h3>" + element.name + "</h3><span class='half-spacer'></span><button id='api-key-button' onclick=\"copy_api_key('" + element.apiKey + "')\" class='delete-button'>Copy API key</button><span class='half-spacer'></span><button class='delete-button' onclick=\"ask_delete(" + element.id + ", '" + element.name + "')\"><span class='material-symbols-outlined'>delete</span></button></div>";
                     });
 
                     if (apps.length === 0) {
