@@ -15,7 +15,9 @@
 
 <body>
     <div class="content">
-        <?php include("../../../header.php"); include("../../../is-permitted.php"); if ($__IS_PERMITTED__ === 0) header("Location: /");?>
+        <?php include("../../../header.php");
+        include("../../../is-permitted.php");
+        if ($__IS_PERMITTED__ === 0) header("Location: /"); ?>
 
         <div class="main align-center">
             <?php include("../../subheader.php"); ?>
@@ -29,10 +31,18 @@
 
             <div class="content-card">
                 <input id="app-name-entry" type="text" placeholder="App name..." />
-                <button onclick="new_app($('#app-name-entry').val(), () => { goto('/app/apps') }, alert)">Create new app</button>
+                <button id="submit-button" onclick="new_app($('#app-name-entry').val(), () => { goto('/app/apps') }, alert)">Create new app</button>
             </div>
 
             <a href="..">Go back</a>
+
+            <script>
+                $("#app-name-entry").keyup(function(event) {
+                    if (event.keyCode === 13) {
+                        $("#submit-button").click();
+                    }
+                });
+            </script>
         </div>
 
         <?php include("../../../footer.php"); ?>

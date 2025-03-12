@@ -15,7 +15,9 @@
 
 <body>
     <div class="content">
-        <?php include("../../../header.php"); include("../../../is-permitted.php"); if ($__IS_PERMITTED__ === 0) header("Location: /");?>
+        <?php include("../../../header.php");
+        include("../../../is-permitted.php");
+        if ($__IS_PERMITTED__ === 0) header("Location: /"); ?>
 
         <div class="main align-center">
             <?php include("../../subheader.php"); ?>
@@ -28,8 +30,8 @@
 
             <div class="content-card">
                 <select id='lb-app'></select>
-                <input id='lb-name' type="text" placeholder="Leaderboard name..."/>
-                <button onclick='if ($("#lb-name").val() === "") { alert("You must enter a name!"); } else { new_leaderboard($("#lb-name").val(), parseInt($("#lb-app").val()), () => { goto("/app/leaderboards"); }, alert); }'>Create leaderboard</button>
+                <input id='lb-name' type="text" placeholder="Leaderboard name..." />
+                <button id='submit-button' onclick='if ($("#lb-name").val() === "") { alert("You must enter a name!"); } else { new_leaderboard($("#lb-name").val(), parseInt($("#lb-app").val()), () => { goto("/app/leaderboards"); }, alert); }'>Create leaderboard</button>
             </div>
 
             <a href="..">Go back</a>
@@ -39,13 +41,18 @@
                     if (apps.length == 0) {
                         alert("You must create an app to assign a leaderboard to first!");
                         location = "/app/apps";
-                    }
-                    else {
+                    } else {
                         apps.forEach((element) => {
                             document.getElementById("lb-app").innerHTML += "<option value='" + element.id + "'>" + element.name + "</option>";
                         });
                     }
                 }, alert);
+
+                $("#lb-name").keyup(function(event) {
+                    if (event.keyCode === 13) {
+                        $("#submit-button").click();
+                    }
+                });
             </script>
         </div>
 
