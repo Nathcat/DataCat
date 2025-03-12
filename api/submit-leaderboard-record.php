@@ -4,16 +4,12 @@ include("../start-session.php");
 header("Content-Type: application/json");
 header("Accept: application/json");
 
-if (!array_key_exists("user", $_SESSION)) {
-    die("{\"status\": \"fail\", \"message\": \"Not logged in.\"}");
-}
-
 $request = json_decode(file_get_contents("php://input"), true);
 
-if (!array_key_exists("name", $request)) {
+if (!array_key_exists("apiKey", $request) || !array_key_exists("user", $request) || !array_key_exists("value", $request)) {
     die(json_encode([
         "status" => "fail",
-        "message" => "You must specify the name of the new leaderboard"
+        "message" => "Missing at least one required field! You must specify apiKey, user, and value!"
     ]));
 }
 
@@ -24,8 +20,8 @@ if ($conn->connect_error) {
 }
 
 try {
-    $stmt = $conn->prepare("SELECT id FROM Apps WHERE `owner` = ? AND id = ?");
-    $stmt->bind_param("is", $_SESSION["user"]["id"], $request["app"]);
+    $stmt = $conn->prepare("SELECT id FROM Apps WHERE `apiKey` = ?");
+    $stmt->bind_param("s", $request["apiKey"]);
     $stmt->execute();
     $count = 0;
     $set = $stmt->get_result();
@@ -37,7 +33,7 @@ try {
         $conn->close();
         die(json_encode([
             "status" => "fail",
-            "message" => "You do not own this app!"
+            "message" => "Invalid API key!"
         ]));
     }
 
@@ -47,8 +43,8 @@ try {
 }
 
 try {
-    $stmt = $conn->prepare("INSERT INTO Leaderboards (`app`, `name`) VALUES (?, ?)");
-    $stmt->bind_param("is", $request["app"], $request["name"]);
+    $stmt = $conn->prepare("INSERT INTO Leaderboards_Data (leaderboard, `user`, `value`) SELECT Leaderboards.id, ?, ? FROM Apps JOIN Leaderboards ON Leaderboards.app = Apps.id WHERE Apps.`apiKey` = ?");
+    $stmt->bind_param("iis", $request["user"], $request["value"], $request["apiKey"]);
     
     if ($stmt->execute()) {
         echo json_encode(["status" => "success"]);

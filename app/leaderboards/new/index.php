@@ -15,7 +15,7 @@
 
 <body>
     <div class="content">
-        <?php include("../../../header.php"); ?>
+        <?php include("../../../header.php"); include("../../../is-permitted.php"); if ($__IS_PERMITTED__ === 0) header("Location: /");?>
 
         <div class="main align-center">
             <?php include("../../subheader.php"); ?>
@@ -29,7 +29,7 @@
             <div class="content-card">
                 <select id='lb-app'></select>
                 <input id='lb-name' type="text" placeholder="Leaderboard name..."/>
-                <button onclick='if ($("#lb-name").val() === "") { alert("You must enter a name!"); } else { new_leaderboard($("#lb-name").val(), parseInt($("#lb-app").val()), () => { goto("/apps/leaderboards"); }, alert); }'>Create leaderboard</button>
+                <button onclick='if ($("#lb-name").val() === "") { alert("You must enter a name!"); } else { new_leaderboard($("#lb-name").val(), parseInt($("#lb-app").val()), () => { goto("/app/leaderboards"); }, alert); }'>Create leaderboard</button>
             </div>
 
             <a href="..">Go back</a>

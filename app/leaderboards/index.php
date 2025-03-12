@@ -16,7 +16,7 @@
 
 <body>
     <div class="content">
-        <?php include("../../header.php"); ?>
+        <?php include("../../header.php"); include("../../is-permitted.php"); if ($__IS_PERMITTED__ === 0) header("Location: /");?>
 
         <div class="main align-center">
             <?php include("../subheader.php"); ?>
