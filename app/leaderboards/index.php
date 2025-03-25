@@ -34,9 +34,16 @@
                     }
                 };
 
+                let copy_id = (key) => {
+                    navigator.clipboard.writeText(key);
+                    $("#id-button").text("Copied!");
+
+                    setTimeout(() => { $("#id-button").text("Copy ID"); }, 2000);
+                };
+
                 get_leaderboards((lbs) => {
                     lbs.forEach(element => {
-                        document.getElementById("leaderboard-list").innerHTML += "<div class='content-card app-record' style='width: 100%; margin: 10px;'><h3>" + element.name + "</h3><p style='margin-left: 25px;'>Belonging to <i>" + element.appName + "</i></p><span class='spacer'></span><button class='delete-button' onclick=\"ask_delete(" + element.id + ", '" + element.name + "')\"><span class='material-symbols-outlined'>delete</span></button></div>";
+                        document.getElementById("leaderboard-list").innerHTML += "<div class='content-card app-record' style='width: 100%; margin: 10px;'><h3>" + element.name + "</h3><p style='margin-left: 25px;'>Belonging to <i>" + element.appName + "</i></p><span class='half-spacer'></span><button onclick=\"copy_id(" + element.id + ")\" class='delete-button'>Copy ID</button><span class='half-spacer'></span><button class='delete-button' onclick=\"ask_delete(" + element.id + ", '" + element.name + "')\"><span class='material-symbols-outlined'>delete</span></button></div>";
                     });
 
                     if (lbs.length === 0) {
