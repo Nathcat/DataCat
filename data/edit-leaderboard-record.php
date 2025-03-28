@@ -48,6 +48,8 @@ try {
     $stmt->bind_param("iii", $request["leaderboardId"], $request["user"], $request["value"]);
     
     if ($stmt->execute()) {
+        mysqli_report(MYSQLI_REPORT_ALL);
+        
         $set = $stmt->get_result();
         $count = 0;
         while ($r = $set->fetch_assoc()) {
