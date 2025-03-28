@@ -44,12 +44,12 @@ try {
 }
 
 try {
-    $stmt = $conn->prepare("SELECT * FROM Leaderboards_Data WHERE leaderboard = ? AND user = ? AND `value` = ?");
-    $stmt->bind_param("iii", $request["leaderboardId"], $request["user"], $request["value"]);
+    $stmt = $conn->prepare("SELECT * FROM Leaderboards_Data WHERE leaderboard = ? AND user = ?");
+    $stmt->bind_param("ii", $request["leaderboardId"], $request["user"]);
     
     if ($stmt->execute()) {
         mysqli_report(MYSQLI_REPORT_ALL);
-        
+
         $set = $stmt->get_result();
         $count = 0;
         while ($r = $set->fetch_assoc()) {
@@ -58,6 +58,7 @@ try {
 
         if ($count === 0) {
             $stmt->close();
+            echo "Inserting";
             $stmt = $conn->prepare("INSERT INTO Leaderboards_Data (leaderboard, user, `value`) VALUES (?, ?, ?)");
             $stmt->bind_param("iii", $request["leaderboardId"], $request["user"], $request["value"]);
 
