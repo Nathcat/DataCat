@@ -56,9 +56,10 @@ try {
             $count++;
         }
 
+        echo $count;
+
         if ($count === 0) {
             $stmt->close();
-            echo "Inserting";
             $stmt = $conn->prepare("INSERT INTO Leaderboards_Data (leaderboard, user, `value`) VALUES (?, ?, ?)");
             $stmt->bind_param("iii", $request["leaderboardId"], $request["user"], $request["value"]);
 
