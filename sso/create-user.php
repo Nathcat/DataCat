@@ -25,6 +25,13 @@ else if ($_POST["password"] != $_POST["password2"]) {
     die("{\"status\": \"fail\", \"message\": \"Passwords don't match.\"}");
 }
 
+if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+    die(json_encode([
+        "status" => "fail",
+        "message" => "Invalid email format."
+    ]));
+}
+
 $DB_server = "localhost:3306";
 $DB_user = "sso";
 $DB_pass = "";
