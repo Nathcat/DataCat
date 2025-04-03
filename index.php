@@ -12,20 +12,9 @@
 
     <body>
         <div class="content">
-            <?php include("header.php"); ?>
+            <?php include("header.php"); include("is-permitted.php")?>
             <?php 
-            $conn = new mysqli("localhost:3306", "Data", "", "DataCat");
-            $stmt = $conn->prepare("INSERT IGNORE INTO UserData (id) VALUES (?)");
-            $stmt->bind_param("i", $_SESSION["user"]["id"]);
-            $stmt->execute(); $stmt->close();
-            
-            $stmt = $conn->prepare("SELECT is_permitted FROM UserData WHERE id = ?");
-            $stmt->bind_param("i", $_SESSION["user"]["id"]);
-            $stmt->execute(); $allowed = $stmt->get_result()->fetch_assoc()["is_permitted"];
-            $stmt->close();
-            $conn->close();
-
-            if ($allowed === 0) : ?>
+            if ($__IS_PERMITTED__ === 0) : ?>
 
                 <div class="main align-center justify-center">
                     <h1>Welcome to DataCat</h1>
