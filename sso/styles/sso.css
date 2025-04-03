@@ -28,6 +28,8 @@
     position: relative;
     width: 100%;
     height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 input[type="text"].big-entry, input[type="password"].big-entry, input[type="email"].big-entry {
