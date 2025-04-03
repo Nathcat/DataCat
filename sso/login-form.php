@@ -63,7 +63,8 @@ slidingEntry_finished_entry_callback = () => {
                 fd.set("user", JSON.stringify(response.user));
             }
             else {
-                fd.set("login-error", response.message);
+                alert(response.message);
+                return;
             }
 
             <?php 

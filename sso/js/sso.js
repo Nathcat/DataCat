@@ -2,17 +2,19 @@ const SSO_BASE_URL = "localhost";
 
 function sso_try_login(username, password, callback) {
 
-    let fd = new FormData();
-    fd.set("username", username);
-    fd.set("password", password);
+    let body = {
+        "username": username,
+        "password": password
+    };
 
     if (window.localStorage.getItem("AuthCat-QuickAuthToken") !== null) {
-        fd.set("quick-auth-token", window.localStorage.getItem("AuthCat-QuickAuthToken"));
+        body["quick-auth-token"] = window.localStorage.getItem("AuthCat-QuickAuthToken");
     }
 
     fetch("/sso/try-login.php", {
         method: "POST",
-        body: fd
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body)
     })
     .then((response) => response.json())
     .then(callback)
