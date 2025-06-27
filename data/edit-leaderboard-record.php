@@ -52,8 +52,10 @@ try {
 
         $set = $stmt->get_result();
         $count = 0;
+        $value = 0;
         while ($r = $set->fetch_assoc()) {
             $count++;
+            $value = $r["value"];
         }
 
         if ($count === 0) {
@@ -76,7 +78,22 @@ try {
             $stmt->close();
         }
         else {
+
             $stmt->close();
+
+            if (array_key_exists("if", $request)) {
+                if ($request["if"] == ">" && $request["value"] < $value) {
+                    echo json_encode(["status" => "fail", "message" => "If condition not met"]);
+                    $conn->close();
+                    exit(0);
+                }
+                else if ($request["if"] == "<" && $request["value"] > $value) {
+                    echo json_encode(["status" => "fail", "message" => "If condition not met"]);
+                    $conn->close();
+                    exit(0);
+                }
+            }
+
             $stmt = $conn->prepare("UPDATE Leaderboards_Data SET `value` = ? WHERE leaderboard = ? AND user = ?");
             $stmt->bind_param("iii", $request["value"], $request["leaderboardId"], $request["user"]);
 
