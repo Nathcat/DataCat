@@ -86,7 +86,8 @@ try {
             }
 
             $stmt = $conn->prepare("UPDATE Leaderboards_Data SET `value` = ? WHERE leaderboard = ? AND user = ?");
-            $stmt->bind_param("iii", $value + $request["value"], $request["leaderboardId"], $request["user"]);
+            $v = $value + $request["value"];
+            $stmt->bind_param("iii", $v, $request["leaderboardId"], $request["user"]);
 
             if ($stmt->execute()) {
                 echo json_encode([
