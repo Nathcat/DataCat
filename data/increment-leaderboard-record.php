@@ -44,6 +44,7 @@ try {
 }
 
 $success = false;
+$added = true;
 
 try {
     $stmt = $conn->prepare("SELECT * FROM Leaderboards_Data WHERE leaderboard = ? AND user = ?");
@@ -86,7 +87,7 @@ try {
             $stmt->close();
 
             if (array_key_exists("op", $request)) {
-                if ($request["op"] == "-") $request["value"] = -1 * $request["value"];
+                if ($request["op"] == "-") { $request["value"] = -1 * $request["value"]; $added = false; }
             }
 
             $stmt = $conn->prepare("UPDATE Leaderboards_Data SET `value` = ? WHERE leaderboard = ? AND user = ?");
@@ -132,7 +133,7 @@ if ($success) {
     }
 
     $data = array(
-        "content" => $username . " has " . ($request["op"] == "+" ? "received" : "lost") . $request["value"] . " points!",
+        "content" => $username . " has " . ($added ? "received " : "lost ") . $request["value"] . " points!",
         "username" => "AggroCat",
         "avatar_url" => "https://cdn.nathcat.net/cloud/30e13ebb-d442-11ef-b058-067048c6a237.png"
     );
