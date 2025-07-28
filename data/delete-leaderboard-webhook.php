@@ -24,29 +24,6 @@ if ($conn->connect_error) {
 }
 
 try {
-    $stmt = $conn->prepare("SELECT id FROM Apps WHERE `owner` = ? AND id = ?");
-    $stmt->bind_param("is", $_SESSION["user"]["id"], $request["app"]);
-    $stmt->execute();
-    $count = 0;
-    $set = $stmt->get_result();
-    while ($row = $set->fetch_assoc()) {
-        $count++;
-    }
-
-    if ($count == 0) {
-        $conn->close();
-        die(json_encode([
-            "status" => "fail",
-            "message" => "You do not own this app!"
-        ]));
-    }
-
-} catch (Exception $e) {
-    $conn->close();
-    die("{\"status\": \"fail\", \"message\": \"$e\"}");
-}
-
-try {
     $stmt = $conn->prepare("DELETE FROM Leaderboards_Webhooks WHERE id = ?");
     $stmt->bind_param("i", $request["id"]);
     
