@@ -91,7 +91,7 @@ function add_webhook(name, url, leaderboard, api_key, success_callback, fail_cal
 }
 
 function delete_webhook(id, api_key, success_callback, fail_callback) {
-    fetch("https://data.nathcat.net/data/add-leaderboard-webhook.php", {
+    fetch("https://data.nathcat.net/data/delete-leaderboard-webhook.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
