@@ -29,7 +29,7 @@
 
             <div class="content-card">
                 <input id='api-key' type="text" placeholder="API key..."></input>
-                <select id='wb-lb'></select>
+                <select id='wh-lb'></select>
                 <input id="wh-name" type="text" placeholder="Webhook name..."></input>
                 <input id="wh-url" type="url" placeholder="Webhook URL..."></input>
                 <button id='submit-button' onclick='if ($("#wh-name").val() === "" || $("#wh-url").val() === "") { alert("You must enter a name and URL!"); } else { add_webhook($("#wh-name").val(), $("#wh-url").val(), $("#wh-lb").val(), $("#api-key").val(), () => { goto("/app/webhooks"); }, alert); }'>Create Webhook</button>
