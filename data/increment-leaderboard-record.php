@@ -43,6 +43,9 @@ try {
     die("{\"status\": \"fail\", \"message\": \"$e\"}");
 }
 
+$success = false;
+$added = true;
+
 try {
     $stmt = $conn->prepare("SELECT * FROM Leaderboards_Data WHERE leaderboard = ? AND user = ?");
     $stmt->bind_param("ii", $request["leaderboardId"], $request["user"]);
@@ -67,6 +70,8 @@ try {
                 echo json_encode([
                     "status" => "success"
                 ]);
+
+                $success = true;
             }
             else {
                 echo json_encode([
@@ -81,26 +86,20 @@ try {
 
             $stmt->close();
 
-            if (array_key_exists("if", $request)) {
-                if ($request["if"] == ">" && $request["value"] < $value) {
-                    echo json_encode(["status" => "fail", "message" => "If condition not met"]);
-                    $conn->close();
-                    exit(0);
-                }
-                else if ($request["if"] == "<" && $request["value"] > $value) {
-                    echo json_encode(["status" => "fail", "message" => "If condition not met"]);
-                    $conn->close();
-                    exit(0);
-                }
+            if (array_key_exists("op", $request)) {
+                if ($request["op"] == "-") { $request["value"] = -1 * $request["value"]; $added = false; }
             }
 
             $stmt = $conn->prepare("UPDATE Leaderboards_Data SET `value` = ? WHERE leaderboard = ? AND user = ?");
-            $stmt->bind_param("iii", $request["value"], $request["leaderboardId"], $request["user"]);
+            $v = $value + $request["value"];
+            $stmt->bind_param("iii", $v, $request["leaderboardId"], $request["user"]);
 
             if ($stmt->execute()) {
                 echo json_encode([
                     "status" => "success"
                 ]);
+
+                $success = true;
             }
             else {
                 echo json_encode([
@@ -121,6 +120,49 @@ try {
     die("{\"status\": \"fail\", \"message\": \"$e\"}");
 }
 
+
+if ($success) {
+    try {
+        $stmt = $conn->prepare("SELECT username FROM SSO.Users WHERE id = ?");
+        $stmt->bind_param("i", $request["user"]);
+        $stmt->execute();
+        $username = $stmt->get_result()->fetch_assoc()["username"];
+    } catch (Exception $e) {
+        $conn->close();
+        exit(0);
+    }
+
+    $data = array(
+        "content" => $username . " has " . ($added ? "received " : "lost ") . $request["value"] . " points!",
+        "username" => "AggroCat",
+        "avatar_url" => "https://cdn.nathcat.net/cloud/30e13ebb-d442-11ef-b058-067048c6a237.png"
+    );
+
+    $options = array(
+      'http' => array(
+        'method'  => 'POST',
+        'content' => json_encode( $data ),
+        'header'=>  "Content-Type: application/json"
+        )
+    );
+
+    $context  = stream_context_create( $options );
+
+    try {
+        $stmt = $conn->prepare("SELECT * FROM Leaderboards_Webhooks WHERE leaderboard = ?");
+        $stmt->bind_param("i", $request["leaderboardId"]);
+        $stmt->execute();
+        $set = $stmt->get_result();
+
+        while ($row = $set->fetch_assoc()) {
+            file_get_contents( $row["url"], false, $context );
+        }
+
+    } catch (Exception $e) {
+        $conn->close();
+        exit(0);
+    }
+}
 
 $conn->close();
 

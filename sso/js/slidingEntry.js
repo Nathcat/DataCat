@@ -1,12 +1,17 @@
 let slidingEntry_entryFieldIds = [];
 let slidingEntry_currentEntryId = 0;
 let slidingEntry_finished_entry_callback = () => {};
+let slidingEntry_currently_sliding = false;
 
 function slidingEntry_nextEntry() {
+    if (slidingEntry_currently_sliding) return;
+
     if (slidingEntry_currentEntryId == slidingEntry_entryFieldIds.length - 1) {
         slidingEntry_finished_entry_callback();
         return;
     }
+
+    slidingEntry_currently_sliding = true;
 
     slidingEntry_currentEntryId++;
 
@@ -15,12 +20,17 @@ function slidingEntry_nextEntry() {
             left: ((i - slidingEntry_currentEntryId) * 100) + "%"
         }, 250, () => {
             document.getElementById(slidingEntry_entryFieldIds[slidingEntry_currentEntryId]).focus();
+            slidingEntry_currently_sliding = false
         });
     }
 }
 
 function slidingEntry_prevEntry() {
+    if (slidingEntry_currently_sliding) return;
+    
     if (slidingEntry_currentEntryId == 0) { return; }
+
+    slidingEntry_currently_sliding = true;
 
     slidingEntry_currentEntryId--;
 
@@ -29,6 +39,7 @@ function slidingEntry_prevEntry() {
             left: ((i - slidingEntry_currentEntryId) * 100) + "%"
         }, 250, () => {
             document.getElementById(slidingEntry_entryFieldIds[slidingEntry_currentEntryId]).focus();
+            slidingEntry_currently_sliding = false;
         });
     }
 }
@@ -37,9 +48,9 @@ function slidingEntry_setup(entryIds) {
     slidingEntry_entryFieldIds = entryIds;
     slidingEntry_currentEntryId = 0;
 
-    window.onclick = (e) => {
+    /*window.onclick = (e) => {
         document.getElementById(slidingEntry_entryFieldIds[slidingEntry_currentEntryId]).focus();
-    };    
+    };*/
 
     for (let i = 0; i < slidingEntry_entryFieldIds.length; i++) {
         document.getElementById(slidingEntry_entryFieldIds[i]).addEventListener("keypress", (e) => {

@@ -5,6 +5,7 @@
         <div style="width: 100%;" class="column align-center justify-center">
             <h1 style="margin-top: 0px;" id="navbar-title">AuthCat</h1>
             <a href="https://apps.nathcat.net">Part of the Nathcat Network</a>
+            <a style="z-index: 1;" href="docs/policies/privacy-policy.html">View our privacy policy</a>
         </div>
 
         <div style="width: 100px; height: 100px; flex-shrink: 0;"></div>

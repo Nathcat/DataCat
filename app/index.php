@@ -21,6 +21,8 @@
             <?php include("subheader.php"); ?>
 
             <h2>Welcome, <?php echo $_SESSION["user"]["fullName"]; ?></h2>
+
+            <h3><a href="https://blog.nathcat.net/?search=DataCat+Docs">DataCat Docs</a></h3>
         </div>
 
         <?php include("../footer.php"); ?>

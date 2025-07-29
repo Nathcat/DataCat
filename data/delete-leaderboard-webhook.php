@@ -1,16 +1,19 @@
 <?php
+include("../start-session.php");
+
 header("Content-Type: application/json");
 header("Accept: application/json");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: Content-Type");
-header("Access-Control-Allow-Methods: POST");
+
+if (!array_key_exists("user", $_SESSION)) {
+    die("{\"status\": \"fail\", \"message\": \"Not logged in.\"}");
+}
 
 $request = json_decode(file_get_contents("php://input"), true);
 
-if (!array_key_exists("apiKey", $request) || !array_key_exists("leaderboardId", $request) || !array_key_exists("user", $request) || !array_key_exists("value", $request)) {
+if (!array_key_exists("id", $request) || !array_key_exists("apiKey", $request)) {
     die(json_encode([
         "status" => "fail",
-        "message" => "Missing at least one required field! You must specify apiKey, leaderboardId, user, and value!"
+        "message" => "You must specify the id and API key of the webhook and the associated app!"
     ]));
 }
 
@@ -44,8 +47,8 @@ try {
 }
 
 try {
-    $stmt = $conn->prepare("INSERT INTO Leaderboards_Data (leaderboard, `user`, `value`) SELECT ?, ?, ? FROM Apps JOIN Leaderboards ON Leaderboards.app = Apps.id WHERE Apps.`apiKey` = ?");
-    $stmt->bind_param("iiis", $request["leaderboardId"], $request["user"], $request["value"], $request["apiKey"]);
+    $stmt = $conn->prepare("DELETE FROM Leaderboards_Webhooks WHERE id = ?");
+    $stmt->bind_param("i", $request["id"]);
     
     if ($stmt->execute()) {
         echo json_encode(["status" => "success"]);
