@@ -43,7 +43,7 @@
                         alert("You must create a leaderboard to create a webhook!");
                         window.location = "/app/webhooks";
                     } else {
-                        apps.forEach((element) => {
+                        lbs.forEach((element) => {
                             document.getElementById("wh-lb").innerHTML += "<option value='" + element.id + "'>" + element.name + "</option>";
                         });
                     }
