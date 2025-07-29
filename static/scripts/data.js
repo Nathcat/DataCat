@@ -73,3 +73,33 @@ function delete_leaderboard(name, success_callback, fail_callback) {
         else fail_callback(r.message);
     });
 }
+
+function add_webhook(name, url, leaderboard, api_key, success_callback, fail_callback) {
+    fetch("https://data.nathcat.net/data/add-leaderboard-webhook.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            "name": name,
+            "leaderboard": leaderboard,
+            "apiKey": api_key,
+            "url": url
+        })
+    }).then((r) => r.json()).then((r) => {
+        if (r.status === "success") success_callback();
+        else fail_callback(r.message);
+    });
+}
+
+function delete_webhook(id, api_key, success_callback, fail_callback) {
+    fetch("https://data.nathcat.net/data/add-leaderboard-webhook.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            "id": id,
+            "apiKey": api_key
+        })
+    }).then((r) => r.json()).then((r) => {
+        if (r.status === "success") success_callback();
+        else fail_callback(r.message);
+    });;
+}
