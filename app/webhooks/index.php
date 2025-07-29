@@ -32,6 +32,15 @@
             <a href="new">Create a new webhook</a>
             
             <script>
+
+                let ask_delete = (id) => {
+                    if (confirm("Are you sure you want to delete this webhook?")) {
+                        let key = prompt("Please enter the API key related to this webhook to proceed with deletion");
+
+                        delete_webhook(id, key, (r) => { alert("Webhook was deleted."); location.reload(); }, alert);
+                    }
+                };
+
                 let html = "";
 
                 fetch("https://data.nathcat.net/data/get-webhooks.php", {
@@ -42,7 +51,7 @@
                         let html = "";
 
                         for (let i = 0; i < r.results.length; i++) {
-                            html += "<div id='" + r.results[i].id + "' class='content-card'><h2>" + r.results[i].name + "</h2><p>Sent on update of " + r.results[i].leaderboardName + "</p><code><i>" + r.results[i].url + "<i></code></div>"    
+                            html += "<div id='" + r.results[i].id + "' class='content-card'><h2>" + r.results[i].name + "</h2><p>Sent on update of " + r.results[i].leaderboardName + "</p><code><i>" + r.results[i].url + "<i></code><button onclick='ask_delete(" + r.results[i].id + ")'>Delete webhook</button></div>"    
                         }
 
                         $("#webhook-list").html(html);
