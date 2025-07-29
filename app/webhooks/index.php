@@ -24,7 +24,7 @@
             <h2>Webhooks</h2>
 
             <div class="content-card">
-                Webhooks allow you to send updates into a discord server when your leaderboard is updated!
+                <p>Webhooks allow you to send updates into a discord server when your leaderboard is updated!</p>
             </div>
 
             <div id="webhook-list" class="column align-center" style="width: calc(100% - 50px); margin: 25px;"></div>
