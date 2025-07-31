@@ -134,8 +134,8 @@ if ($success) {
 
     $data = array(
         "content" => $username . " has " . ($added ? "received " : "lost ") . $request["value"] . " points!",
-        "username" => "AggroCat",
-        "avatar_url" => "https://cdn.nathcat.net/cloud/30e13ebb-d442-11ef-b058-067048c6a237.png"
+        "username" => "DataCat",
+        "avatar_url" => "https://cdn.nathcat.net/cloud/116bc634-b69a-11ef-9adc-067048c6a237.png"
     );
 
     $options = array(
