@@ -24,8 +24,8 @@ if ($conn->connect_error) {
 }
 
 try {
-    $stmt = $conn->prepare("SELECT id FROM Apps WHERE `apiKey` = ?");
-    $stmt->bind_param("s", $request["apiKey"]);
+    $stmt = $conn->prepare("SELECT * FROM Leaderboards JOIN Apps ON Apps.id = Leaderboards.app WHERE Apps.apiKey = ? AND Leaderboards.id = ?");
+    $stmt->bind_param("si", $request["apiKey"], $request["leaderboard"]);
     $stmt->execute();
     $count = 0;
     $set = $stmt->get_result();
@@ -33,11 +33,11 @@ try {
         $count++;
     }
 
-    if ($count == 0) {
+    if ($count != 1) {
         $conn->close();
         die(json_encode([
             "status" => "fail",
-            "message" => "Invalid API key!"
+            "message" => "Invalid API key, or leaderboard does not exist!"
         ]));
     }
 

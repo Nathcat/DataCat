@@ -24,8 +24,8 @@ if ($conn->connect_error) {
 }
 
 try {
-    $stmt = $conn->prepare("SELECT id FROM Apps WHERE `apiKey` = ?");
-    $stmt->bind_param("s", $request["apiKey"]);
+    $stmt = $conn->prepare("SELECT * FROM Leaderboards_Webhooks JOIN Leaderboards ON Leaderboards_Webhooks.leaderboard = Leaderboards.id JOIN Apps ON Leaderboards.app = Apps.id WHERE Apps.apiKey = ? AND Leaderboards_Webhooks.id = ?");
+    $stmt->bind_param("si", $request["apiKey"], $request["id"]);
     $stmt->execute();
     $count = 0;
     $set = $stmt->get_result();
@@ -33,11 +33,11 @@ try {
         $count++;
     }
 
-    if ($count == 0) {
+    if ($count != 1) {
         $conn->close();
         die(json_encode([
             "status" => "fail",
-            "message" => "Invalid API key!"
+            "message" => "Invalid API key, or webhook does not exist!"
         ]));
     }
 
