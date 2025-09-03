@@ -73,6 +73,64 @@ $invite = $r[0];
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <style>
+        #accept {
+            border: 5px solid #009c00ff;
+        }
+
+        #accept:hover {
+            transition: 500ms;
+            color: #00ff00;
+        }
+
+        #decline {
+            border: 5px solid #9c0000ff;
+        }
+
+        #decline:hover {
+            transition: 500ms;
+            color: #ff0000;
+        }
+    </style>
+
+    <script>
+        let token = "<?php echo $TOKEN; ?>";
+
+        function accept() {
+            fetch("https://data.nathcat.net/data/accept-group-invite.php", {
+                method: "POST",
+                credentials: "include",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({"token": token})
+            }).then((r) => r.json()).then((r) => {
+                if (r.status == "success") {
+                    alert("You have joined <?php echo $invite["name"]; ?>!");
+                    window.location = "https://apps.nathcat.net";
+                }
+                else {
+                    alert(r.message);
+                }
+            });
+        }
+
+        function decline() {
+            fetch("https://data.nathcat.net/data/decline-group-invite.php", {
+                method: "POST",
+                credentials: "include",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({"token": token})
+            }).then((r) => r.json()).then((r) => {
+                if (r.status == "success") {
+                    alert("Invitation was declined!");
+                    window.location = "https://apps.nathcat.net";
+                }
+                else {
+                    alert(r.message);
+                }
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -97,9 +155,9 @@ $invite = $r[0];
             </div>
 
             <div class="row align-center justify-center">
-                <button>Accept</button>
-                <span class="quarter-spacer"></span>
-                <button>Decline</button>
+                <button id="accept" onclick="accept()">Accept</button>
+                <span class="half-spacer"></span>
+                <button id="decline" onclick="decline()">Decline</button>
             </div>
 
         </div>
