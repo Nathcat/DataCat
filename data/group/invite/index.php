@@ -81,7 +81,7 @@ $invite = $r[0];
 
         #accept:hover {
             transition: 500ms;
-            color: #00ff00;
+            background-color: #00ff00;
         }
 
         #decline {
@@ -90,7 +90,7 @@ $invite = $r[0];
 
         #decline:hover {
             transition: 500ms;
-            color: #ff0000;
+            background-color: #ff0000;
         }
     </style>
 
