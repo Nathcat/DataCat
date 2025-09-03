@@ -84,11 +84,11 @@ $invite = $r[0];
             
             <h1><?php echo $invite["name"]; ?></h1>
 
-            <div class="content-card">
+            <div class="content-card justify-center align-center">
                 <h2>Who sent the invite?</h2>
 
                 <div class="profile-picture">
-                    <img src="<?php echo $invite["pfpPath"];?>" />
+                    <img src="https://cdn.nathcat.net/pfps/<?php echo $invite["pfpPath"];?>" />
                 </div>
 
                 <h3><?php echo $invite["fullName"]; ?></h3>
