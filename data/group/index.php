@@ -119,7 +119,7 @@ include("../../../start-session.php");
 
                         ?>
 
-                        <div class="content-card column align-center justify-center" style="padding-left: 50%; padding-right: 50%;">
+                        <div class="content-card column align-center justify-center" style="padding: 0 25% 0 25%;">
                             <h1><?php echo $group["name"]; ?></h1>
 
                             <h3><i>Created by</i></h3>
@@ -132,7 +132,7 @@ include("../../../start-session.php");
                             <h4><i><?php echo $group["username"]; ?></i></h4>
                         </div>
 
-                        <div class="content-card column align-center" style="padding-left: 50%; padding-right: 50%;">
+                        <div class="content-card column align-center" style="padding: 0 25% 0 25%;">
                             <h2>Members</h2>
                             <?php
 
