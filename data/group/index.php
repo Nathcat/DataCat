@@ -132,7 +132,7 @@ include("../../../start-session.php");
                             <h4><i><?php echo $group["username"]; ?></i></h4>
                         </div>
 
-                        <div class="content-card column justify-center">
+                        <div class="content-card column align-center">
                             <h2>Members</h2>
                             <?php
 
