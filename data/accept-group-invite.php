@@ -25,7 +25,7 @@ if ($conn->connect_error) {
 
 try {
     $stmt = $conn->prepare("call accept_group_invite(?, ?)");
-    $stmt->bind_param("ii", $request["token"], $session["user"]["id"]);
+    $stmt->bind_param("si", $request["token"], $_SESSION["user"]["id"]);
     
     if ($stmt->execute()) {
         echo json_encode(["status" => "success"]);
