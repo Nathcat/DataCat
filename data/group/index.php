@@ -116,7 +116,7 @@ include("../../../start-session.php");
                         while ($row = $set->fetch_assoc()) {
                             array_push($members, $row);
                         }
-                        
+
                         ?>
 
                         <div class="content-card column align-center justify-center">
@@ -132,7 +132,8 @@ include("../../../start-session.php");
                             <h4><i><?php echo $group["username"]; ?></i></h4>
                         </div>
 
-                        <div class="column">
+                        <div class="content-card column justify-center">
+                            <h2>Members</h2>
                             <?php
 
                             if (count($members) == 0) {
