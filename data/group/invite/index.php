@@ -84,7 +84,7 @@ $invite = $r[0];
             
             <h1><?php echo $invite["name"]; ?></h1>
 
-            <div class="content-card column justify-center align-center">
+            <div class="content-card column justify-center align-center" style="margin: 50px;">
                 <h2>Who sent the invite?</h2>
 
                 <div class="profile-picture">
