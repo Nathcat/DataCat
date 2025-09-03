@@ -113,8 +113,11 @@ include("../../../start-session.php");
 
                         $members = array();
                         while ($row = $set->fetch_assoc()) {
+                            print_r($row);
                             array_push($members, $row);
                         }
+
+                        print_r($members);
 
                         ?>
 
@@ -143,7 +146,7 @@ include("../../../start-session.php");
                                 echo "<img src=\"/pfps/" . $m["pfpPath"] . "\">";
                                 echo "</div><span class=\"half-spacer\"></span><div class=\"column align-center justify-center\">";
                                 echo "<h3>" . $m["fullName"] . "</h3>";
-                                echo "<p><" . $m["username"] . "</p></div></div>";                                
+                                echo "<p>" . $m["username"] . "</p></div></div>";                                
                             }
 
                             ?>
