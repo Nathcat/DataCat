@@ -141,7 +141,7 @@ include("../../../start-session.php");
                             }
 
                             foreach ($members as $m) {
-                                echo "<div style=\"border: 2px solid #aaaaaa; justify-content: start;\" class=\"content-card row align-center\"><div class=\"small-profile-picture\">";
+                                echo "<div style=\"width: 95%; border: 2px solid #aaaaaa; justify-content: start;\" class=\"content-card row align-center\"><div class=\"small-profile-picture\">";
                                 echo "<img src=\"/pfps/" . $m["pfpPath"] . "\">";
                                 echo "</div><span class=\"half-spacer\"></span><div class=\"column align-center justify-center\">";
                                 echo "<h3>" . $m["fullName"] . "</h3>";
