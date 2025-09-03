@@ -112,7 +112,7 @@ include("../../../start-session.php");
 
                         $members = array();
                         while ($row = $set->fetch_assoc()) {
-                            array_push($r, $row);
+                            array_push($members, $row);
                         }
 
                         ?>
@@ -131,7 +131,11 @@ include("../../../start-session.php");
                         </div>
 
                         <div class="column">
-                            <?php 
+                            <?php
+
+                            if (count($members) == 0) {
+                                echo "<h2>This group has no members!</h2>";
+                            }
 
                             foreach ($members as $m) {
                                 echo "<div style=\"border: 2px solid #aaaaaa; justify-content: start;\" class=\"content-card row align-center\"><div class=\"small-profile-picture\">";
