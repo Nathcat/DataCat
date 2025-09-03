@@ -110,15 +110,13 @@ include("../../../start-session.php");
                         $stmt = $conn->prepare("SELECT SSO.Users.username, SSO.Users.fullName, SSO.Users.pfpPath FROM `Group_Members` JOIN SSO.Users ON `Group_Members`.`user` = SSO.Users.id WHERE `group` = ?");
                         $stmt->bind_param("i", $_GET["id"]);
                         $stmt->execute();
+                        $set = $stmt->get_result();
 
                         $members = array();
                         while ($row = $set->fetch_assoc()) {
-                            print_r($row);
                             array_push($members, $row);
                         }
-
-                        print_r($members);
-
+                        
                         ?>
 
                         <div class="content-card column align-center justify-center">
