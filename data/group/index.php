@@ -75,7 +75,7 @@ include("../../../start-session.php");
 
 <body>
     <div class="content">
-        <?php include("../../../header.php");?>
+        <?php include("../../header.php");?>
 
         <div class="main align-center">
             <?php 
@@ -109,6 +109,7 @@ include("../../../start-session.php");
                         $stmt->close();
                         $stmt = $conn->prepare("SELECT SSO.Users.username, SSO.Users.fullName, SSO.Users.pfpPath FROM `Group_Members` JOIN SSO.Users ON `Group_Members`.`user` = SSO.Users.id WHERE `group` = ?");
                         $stmt->bind_param("i", $_GET["id"]);
+                        $stmt->execute();
 
                         $members = array();
                         while ($row = $set->fetch_assoc()) {
@@ -163,7 +164,7 @@ include("../../../start-session.php");
 
         </div>
 
-        <?php include("../../../footer.php"); ?>
+        <?php include("../../footer.php"); ?>
     </div>
 </body>
 
