@@ -96,7 +96,12 @@ $invite = $r[0];
 
             </div>
 
-            <p><?php echo $ERR_MSG; ?></p>
+            <div class="row align-center justify-center">
+                <button>Accept</button>
+                <span class="quarter-spacer"></span>
+                <button>Decline</button>
+            </div>
+
         </div>
 
         <?php include("../../../footer.php"); ?>
