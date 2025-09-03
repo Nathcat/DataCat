@@ -90,7 +90,7 @@ include("../../../start-session.php");
                 }
 
                 try {
-                    $stmt = $conn->prepare("SELECT *, SSO.Users.username, SSO.Users.fullName, SSO.Users.pfpPath FROM `Groups` JOIN SSO.Users WHERE `owner` = SSO.Users.id WHERE `Groups`.`id` = ?");
+                    $stmt = $conn->prepare("SELECT *, SSO.Users.username, SSO.Users.fullName, SSO.Users.pfpPath FROM `Groups` JOIN SSO.Users ON `owner` = SSO.Users.id WHERE `Groups`.`id` = ?");
                     $stmt->bind_param("i", $_GET["id"]);
                     $stmt->execute();
                 
@@ -147,7 +147,7 @@ include("../../../start-session.php");
                     <?php endif;
                 } catch (Exception $e) {
                     $conn->close();
-                    die("{\"status\": \"fail\", \"message\": \"$e\"}");
+                    echo $e;
                 }
 
 
