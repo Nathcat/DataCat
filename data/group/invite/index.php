@@ -11,8 +11,6 @@ $TOKEN = $_GET["token"];
 
 include("../start-session.php");
 
-header("Content-Type: application/json");
-
 if (!array_key_exists("user", $_SESSION)) {
     $ERR_MSG = "You are not logged in!";
     include("__error.php");
