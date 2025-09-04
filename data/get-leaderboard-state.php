@@ -36,7 +36,6 @@ if ($conn->connect_error) {
 
 if (array_key_exists("leaderboardId", $request)) {
     try {
-        mysqli_report(MYSQLI_REPORT_ALL);
         $stmt = $conn->prepare("SELECT SSO.Users.id AS 'id', SSO.Users.username AS 'username', SSO.Users.fullName AS 'fullName', SSO.Users.pfpPath AS 'pfpPath', `value` FROM Leaderboards_Data JOIN SSO.Users ON `user` = SSO.Users.id WHERE leaderboard = ? ORDER BY `value` " . $request["orderBy"] . (defined("LIMIT") ? " LIMIT ?" : ""));
         if (defined("LIMIT")) $stmt->bind_param("ii", $request["leaderboardId"], $request["limit"]);
         else $stmt->bind_param("i", $request["leaderboardId"]);
