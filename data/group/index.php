@@ -100,7 +100,7 @@ endif;
 
             function confirm_leave_group() {
                 if (confirm("Are you sure you want to leave this group? You won't be able to join back unless an admin invites you again!")) {
-                    leave_group(g_id, u_id, () => { goto('/app'); }, alert);
+                    leave_group(g_id, u_id, () => { location = '/app'; }, alert);
                 }
             }
         </script>
