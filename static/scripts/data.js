@@ -103,3 +103,28 @@ function delete_webhook(id, api_key, success_callback, fail_callback) {
         else fail_callback(r.message);
     });;
 }
+
+function get_groups(success_callback, fail_callback) {
+    fetch("https://data.nathcat.net/data/get-groups.php", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        credentials: "include"
+    }).then((r) => r.json()).then((r) => {
+        if (r.status === "success") success_callback(r);
+        else fail_callback(r.message);
+    });
+}
+
+function create_group(name, success_callback, fail_callback) {
+    fetch("https://data.nathcat.net/data/get-groups.php", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            "name": name
+        }),
+        credentials: "include"
+    }).then((r) => r.json()).then((r) => {
+        if (r.status === "success") success_callback();
+        else fail_callback(r.message);
+    });
+}
