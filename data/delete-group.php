@@ -25,7 +25,7 @@ if ($conn->connect_error) {
 
 try {
     $stmt = $conn->prepare("DELETE FROM `Groups` WHERE `id` = ? AND `owner` = ?");
-    $stmt->bind_param("ii", $request["groups"], $_SESSION["user"]["id"]);
+    $stmt->bind_param("ii", $request["group"], $_SESSION["user"]["id"]);
     $stmt->execute();
 
 } catch (Exception $e) {
