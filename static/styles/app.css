@@ -36,3 +36,12 @@
 .app-record:hover .delete-button {
     opacity: 1;
 }
+
+.group-record {
+    justify-content: center;
+}
+
+.group-record:hover {
+    transition: 500ms;
+    background-color: linear-gradient(45deg, #e600ff 0%, #00ccff 100%);
+}
