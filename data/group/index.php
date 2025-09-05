@@ -1,76 +1,76 @@
 <?php
 include("../../../start-session.php");
+
+if (array_key_exists("id", $_GET)) :
+
+$MEMBER = 1;
+$OWNER = 2;
+
+$conn = new mysqli("localhost:3306", "Data", "", "DataCat");
+
+if ($conn->connect_error) {
+    die($conn->connect_error);
+}
+
+$ACCESS_LEVEL = 0;
+
+try {
+    $stmt = $conn->prepare("SELECT `owner` FROM `Groups` WHERE `id` = ? AND `owner` = ?");
+    $stmt->bind_param("ii", $_GET["id"], $_SESSION["user"]["id"]);
+    $stmt->execute();
+
+    $set = $stmt->get_result();
+    $c = 0;
+    while ($row = $set->fetch_assoc()) {
+        $c++;
+    }
+
+    if ($c != 0) {
+        $ACCESS_LEVEL = $OWNER;
+    }
+
+    $stmt->close();
+
+    if ($ACCESS_LEVEL == 0) {
+        $stmt = $conn->prepare("SELECT `user` FROM `Group_Members` WHERE `group` = ? AND `user` = ?");
+        $stmt->bind_param("ii", $_GET["id"], $_SESSION["user"]["id"]);
+        $stmt->execute();
+
+        $set = $stmt->get_result();
+        $c = 0;
+        while ($row = $set->fetch_assoc()) {
+            $c++;
+        }
+
+        if ($c != ) {
+            $ACCESS_LEVEL = $MEMBER;
+        }
+
+        $stmt->close();
+    }
+
+} catch (Exception $e) {
+    $conn->close();
+    die($e);
+}
+
+$conn->close();
+
+endif;
+
 ?>
 
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>GroupCat - Invite</title>
+    <title>DataCat - Group</title>
 
     <link rel="stylesheet" href="https://nathcat.net/static/css/new-common.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-    <style>
-        #accept {
-            border: 5px solid #009c00ff;
-        }
-
-        #accept:hover {
-            transition: 500ms;
-            background-color: #00ff00;
-        }
-
-        #decline {
-            border: 5px solid #9c0000ff;
-        }
-
-        #decline:hover {
-            transition: 500ms;
-            background-color: #ff0000;
-        }
-    </style>
-
-    <script>
-        let token = "<?php echo $TOKEN; ?>";
-
-        function accept() {
-            fetch("https://data.nathcat.net/data/accept-group-invite.php", {
-                method: "POST",
-                credentials: "include",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({"token": token})
-            }).then((r) => r.json()).then((r) => {
-                if (r.status == "success") {
-                    alert("You have joined <?php echo $invite["name"]; ?>!");
-                    window.location = "https://apps.nathcat.net";
-                }
-                else {
-                    alert(r.message);
-                }
-            });
-        }
-
-        function decline() {
-            fetch("https://data.nathcat.net/data/decline-group-invite.php", {
-                method: "POST",
-                credentials: "include",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({"token": token})
-            }).then((r) => r.json()).then((r) => {
-                if (r.status == "success") {
-                    alert("Invitation was declined!");
-                    window.location = "https://apps.nathcat.net";
-                }
-                else {
-                    alert(r.message);
-                }
-            });
-        }
-    </script>
 </head>
 
 <body>
@@ -130,6 +130,13 @@ include("../../../start-session.php");
 
                             <h3><?php echo $group["fullName"]; ?></h3>
                             <h4><i><?php echo $group["username"]; ?></i></h4>
+
+                            <?php if ($ACCESS_LEVEL == $OWNER) : ?>
+                                <h2><i><b>You own this group!</b></i></h2>
+                            <?php else if ($ACCESS_LEVEL == $MEMBER) : ?>
+                                <h2><i><b>You are a member of this group!</b></i></h2>
+                            <?php endif; ?>
+
                         </div>
 
                         <div class="content-card column align-center" style="min-width: 50%; max-width: 100%;">
