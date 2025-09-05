@@ -206,7 +206,7 @@ endif;
                         <?php if ($ACCESS_LEVEL == $MEMBER) : ?>
                             <button class="red" onclick="confirm_leave_group()">Leave group</button>
                         <?php elseif ($ACCESS_LEVEL == $OWNER) : ?>
-                            <button class="red" onclick="confirm_delete_grouo()">Delete group</button>
+                            <button class="red" onclick="confirm_delete_group()">Delete group</button>
                         <?php endif; ?>
                 
                     <?php endif;
