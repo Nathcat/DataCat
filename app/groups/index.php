@@ -32,7 +32,7 @@
             <script>
                 get_groups((r) => {
                     r.owned.forEach(element => {
-                        document.getElementById("owned-group-list").innerHTML += "<div class='content-card app-record' style='width: 100%; margin: 10px;'><h3>" + element.name + "</h3><span class='half-spacer'></span><h4><i>" + element.ownerUsername + "</i></h4></div>";
+                        document.getElementById("owned-group-list").innerHTML += "<div class='content-card app-record' style='width: 100%; margin: 10px;'><h3>" + element.name + "</h3><span class='quarter-spacer'></span><h4>Created by <i>" + element.ownerUsername + "</i></h4></div>";
                     });
 
                     if (r.owned.length === 0) {
@@ -40,7 +40,7 @@
                     }
 
                     r.memberOf.forEach(element => {
-                        document.getElementById("member-group-list").innerHTML += "<div class='content-card app-record' style='width: 100%; margin: 10px;'><h3>" + element.name + "</h3><span class='half-spacer'></span><h4><i>" + element.ownerUsername + "</i></h4></div>";
+                        document.getElementById("member-group-list").innerHTML += "<div class='content-card app-record' style='width: 100%; margin: 10px;'><h3>" + element.name + "</h3><span class='quarter-spacer'></span><h4>Created by <i>" + element.ownerUsername + "</i></h4></div>";
                     });
 
                     if (r.memberOf.length === 0) {
