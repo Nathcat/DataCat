@@ -125,7 +125,7 @@ endif;
                     })
                 }).then((r) => r.json()).then((r) => {
                     if (r.status === "success") {
-                        let ids = r.results.keys();
+                        let ids = Object.keys(r.results);
                         if (ids.length == 0) {
                             alert("User not found");
                             return;
