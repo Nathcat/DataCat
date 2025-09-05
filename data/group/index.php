@@ -1,5 +1,5 @@
 <?php
-include("../../../start-session.php");
+include("../../start-session.php");
 
 if (array_key_exists("id", $_GET)) :
 
