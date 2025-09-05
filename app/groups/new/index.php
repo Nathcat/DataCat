@@ -29,7 +29,7 @@
 
             <div class="content-card">
                 <input id='name' type="text" placeholder="Group name..." />
-                <button id='submit-button' onclick="if ($('#name').value() !== '') create_group($('#name').value(), () => { goto('/app/groups'); }, alert); else alert('You must provide a name for the new group!'); ">Create group</button>
+                <button id='submit-button' onclick="if ($('#name').val() !== '') create_group($('#name').val(), () => { goto('/app/groups'); }, alert); else alert('You must provide a name for the new group!'); ">Create group</button>
             </div>
 
             <a href="..">Go back</a>
