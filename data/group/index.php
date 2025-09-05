@@ -42,7 +42,7 @@ try {
             $c++;
         }
 
-        if ($c != ) {
+        if ($c != 0) {
             $ACCESS_LEVEL = $MEMBER;
         }
 
