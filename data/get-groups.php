@@ -28,7 +28,7 @@ try {
 
     $stmt->close();
 
-    $stmt = $conn->prepare("SELECT `Groups`.*, SSO.Users.username AS 'ownerUsername' FROM `Group_Members` JOIN SSO.Users ON `Groups`.`owner` = SSO.Users.id JOIN `Groups` ON `Group_Members`.`user` = ?");
+    $stmt = $conn->prepare("SELECT `Groups`.*, SSO.Users.username AS 'ownerUsername' FROM `Group_Members` JOIN `Groups` ON `Group_Members`.`user` = ? JOIN SSO.Users ON `Groups`.`owner` = SSO.Users.id");
     $stmt->bind_param("i", $_SESSION["user"]["id"]);
     $stmt->execute();
 
