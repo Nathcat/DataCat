@@ -113,6 +113,38 @@ endif;
                     }
                 }
             }
+
+            function send_invite() {
+                let username = prompt("Please enter the username of the user you wish to invite to this group");
+
+                fetch("https://data.nathcat.net/sso/user-search.php", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        "username": username
+                    })
+                }).then((r) => r.json()).then((r) => {
+                    if (r.status === "success") {
+                        let ids = r.results.keys();
+                        if (ids.length == 0) {
+                            alert("User not found");
+                            return;
+                        }
+                        else if (ids.length != 1) {
+                            console.log(r.results);
+                            alert("More than one result! Please specify the exact username!");
+                            return;
+                        }
+                        else {
+                            invite_to_group(g_id, ids[0], () => { alert("Invite sent!"); }, alert);
+                        }
+                        
+                    }
+                    else {
+                        alert(r.message);
+                    }
+                });
+            }
         </script>
     <?php endif; ?>
 </head>
@@ -207,6 +239,7 @@ endif;
                             <button class="red" onclick="confirm_leave_group()">Leave group</button>
                         <?php elseif ($ACCESS_LEVEL == $OWNER) : ?>
                             <button class="red" onclick="confirm_delete_group()">Delete group</button>
+                            <button class="green" onclick="send_invite()">Invite a new user to the group</button>
                         <?php endif; ?>
                 
                     <?php endif;
