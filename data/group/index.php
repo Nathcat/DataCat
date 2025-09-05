@@ -165,7 +165,7 @@ endif;
 
                         <div class="content-card column align-center justify-center" style="min-width: 50%; max-width: 100%;">
                             <h1><?php echo $group["name"]; ?></h1>
-                            <script> g_name = <?php echo $group["name"]; ?>; </script>
+                            <script> g_name = "<?php echo $group["name"]; ?>"; </script>
 
                             <h3><i>Created by</i></h3>
 
