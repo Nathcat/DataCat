@@ -116,7 +116,7 @@ function get_groups(success_callback, fail_callback) {
 }
 
 function create_group(name, success_callback, fail_callback) {
-    fetch("https://data.nathcat.net/data/get-groups.php", {
+    fetch("https://data.nathcat.net/data/create-group.php", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
