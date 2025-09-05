@@ -96,11 +96,21 @@ endif;
     <?php if (array_key_exists("id", $_GET)) : ?>
         <script>
             const g_id = <?php echo $_GET["id"]; ?>;
-            const u_id = <?php echo $_SESSION["user"]["id"]; ?>
+            const u_id = <?php echo $_SESSION["user"]["id"]; ?>;
+            var g_name;
 
             function confirm_leave_group() {
                 if (confirm("Are you sure you want to leave this group? You won't be able to join back unless an admin invites you again!")) {
                     leave_group(g_id, u_id, () => { location = '/app'; }, alert);
+                }
+            }
+
+            function confirm_delete_group() {
+                if (confirm("Are you sure you want to delete this group permanently? This action is irreversible!")) {
+                    let x = prompt("Enter the name of this group to confirm", "");
+                    if (x === g_name) {
+                        delete_group(g_id, () => { location = '/app'; }, alert);
+                    }
                 }
             }
         </script>
@@ -155,6 +165,7 @@ endif;
 
                         <div class="content-card column align-center justify-center" style="min-width: 50%; max-width: 100%;">
                             <h1><?php echo $group["name"]; ?></h1>
+                            <script> g_name = <?php echo $group["name"]; ?>; </script>
 
                             <h3><i>Created by</i></h3>
 
@@ -194,7 +205,9 @@ endif;
 
                         <?php if ($ACCESS_LEVEL == $MEMBER) : ?>
                             <button class="red" onclick="confirm_leave_group()">Leave group</button>
-                        <?php endif;?>
+                        <?php elseif ($ACCESS_LEVEL == $OWNER) : ?>
+                            <button class="red" onclick="confirm_delete_grouo()">Delete group</button>
+                        <?php endif; ?>
                 
                     <?php endif;
                 } catch (Exception $e) {

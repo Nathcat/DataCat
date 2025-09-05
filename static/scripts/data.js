@@ -143,3 +143,17 @@ function leave_group(group, user, success_callback, fail_callback) {
         else fail_callback(r.message);
     });
 }
+
+function delete_group(group, success_callback, fail_callback) {
+    fetch("https://data.nathcat.net/data/delete-group.php", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        credentials: "include",
+        body: JSON.stringify({
+            "group": group
+        })
+    }).then((r) => r.json()).then((r) => {
+        if (r.status === "success") success_callback();
+        else fail_callback(r.message);
+    });
+}
