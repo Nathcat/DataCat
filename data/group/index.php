@@ -133,7 +133,7 @@ endif;
 
                             <?php if ($ACCESS_LEVEL == $OWNER) : ?>
                                 <h2><i><b>You own this group!</b></i></h2>
-                            <?php else if ($ACCESS_LEVEL == $MEMBER) : ?>
+                            <?php elseif ($ACCESS_LEVEL == $MEMBER) : ?>
                                 <h2><i><b>You are a member of this group!</b></i></h2>
                             <?php endif; ?>
 
