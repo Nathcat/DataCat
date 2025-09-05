@@ -71,6 +71,40 @@ endif;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/static/scripts/data.js"></script>
+
+    <style>
+        .green {
+            border: 5px solid #009c00ff;
+        }
+
+        .green:hover {
+            transition: 500ms;
+            background-color: #00ff00;
+        }
+
+        .red {
+            border: 5px solid #9c0000ff;
+        }
+
+        .red:hover {
+            transition: 500ms;
+            background-color: #ff0000;
+        }
+    </style>
+
+    <?php if (array_key_exists("id", $_GET)) : ?>
+        <script>
+            const g_id = <?php echo $_GET["id"]; ?>;
+            const u_id = <?php echo $_SESSION["user"]["id"]; ?>
+
+            function confirm_leave_group() {
+                if (confirm("Are you sure you want to leave this group? You won't be able to join back unless an admin invites you again!")) {
+                    leave_group(g_id, u_id, () => { goto('/app'); }, alert);
+                }
+            }
+        </script>
+    <?php endif; ?>
 </head>
 
 <body>
@@ -157,6 +191,10 @@ endif;
 
                             ?>
                         </div>
+
+                        <?php if ($ACCESS_LEVEL == $MEMBER) : ?>
+                            <button class="red" onclick="confirm_leave_group()">Leave group</button>
+                        <?php endif;?>
                 
                     <?php endif;
                 } catch (Exception $e) {

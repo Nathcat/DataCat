@@ -128,3 +128,18 @@ function create_group(name, success_callback, fail_callback) {
         else fail_callback(r.message);
     });
 }
+
+function leave_group(group, user, success_callback, fail_callback) {
+    fetch("https://data.nathcat.net/data/remove-from-group.php", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        credentials: "include",
+        body: JSON.stringify({
+            "group": group,
+            "user": user
+        })
+    }).then((r) => r.json()).then((r) => {
+        if (r.status === "success") success_callback();
+        else fail_callback(r.message);
+    });
+}

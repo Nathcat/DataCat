@@ -10,7 +10,7 @@ if (!array_key_exists("user", $_SESSION)) {
 
 $request = json_decode(file_get_contents("php://input"), true);
 
-if (!array_key_exists("user", $request) || array_key_exists("group", $request)) {
+if (!array_key_exists("user", $request) || !array_key_exists("group", $request)) {
     die(json_encode([
         "status" => "fail",
         "message" => "You must specify the user ID and group ID"
