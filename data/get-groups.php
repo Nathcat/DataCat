@@ -17,7 +17,7 @@ $owned = array();
 $member_of = array();
 
 try {
-    $stmt = $conn->prepare("SELECT * FROM `Groups` WHERE `owner` = ?");
+    $stmt = $conn->prepare("SELECT `Groups`.*, SSO.Users.username AS 'ownerUsername' FROM `Groups` JOIN SSO.Users ON `Groups`.`owner` = SSO.Users.id WHERE `owner` = ?");
     $stmt->bind_param("i", $_SESSION["user"]["id"]);
     $stmt->execute();
 
@@ -28,7 +28,7 @@ try {
 
     $stmt->close();
 
-    $stmt = $conn->prepare("SELECT `Groups`.`id`, `Groups`.`name` FROM `Group_Members` JOIN `Groups` ON `Group_Members`.`user` = ?");
+    $stmt = $conn->prepare("SELECT `Groups`.*, SSO.Users.username AS 'ownerUsername FROM `Group_Members` JOIN SSO.Users ON `Groups`.`owner` = SSO.Users.id JOIN `Groups` ON `Group_Members`.`user` = ?");
     $stmt->bind_param("i", $_SESSION["user"]["id"]);
     $stmt->execute();
 
