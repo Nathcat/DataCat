@@ -71,7 +71,7 @@
     }
 
     try {
-        mysqli_report(MYSQLI_REPORT_ALL);
+        mysqli_report(MYSQLI_REPORT_ERROR);
         $stmt = $conn->prepare("SELECT `name` FROM Leaderboards WHERE id = ?");
         $stmt->bind_param("i", $_GET["id"]);
         $stmt->execute();
