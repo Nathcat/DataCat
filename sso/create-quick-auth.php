@@ -47,10 +47,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 $DB_r = $result->fetch_assoc();
 
-if ($DB_r["passwordUpdated"] == 0) {
-    die("{\"status\": \"fail\", \"message\": \"You must have updated your password to the new system to use this feature.\"}");
-}
-else if (password_verify($request["password"], $DB_r["password"])) {
+if (password_verify($request["password"], $DB_r["password"])) {
     $stmt->close();
     $stmt = $conn->prepare("CALL create_quick_auth(?)");
     $stmt->bind_param("i", $DB_r["id"]);
