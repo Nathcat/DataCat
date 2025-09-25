@@ -25,7 +25,7 @@ $DB_user = "sso";
 $DB_pass = "";
 $DB_schema = "SSO";
 
-if (array_key_exists("username", $request) || array_key_exists("password", $request)) {
+if (!array_key_exists("username", $request) || !array_key_exists("password", $request)) {
     die("{\"status\": \"fail\", \"message\": \"Invalid request.\"}");
 }
 
