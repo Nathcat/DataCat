@@ -7,9 +7,7 @@ header("Access-Control-Allow-Credentials: true");
 
 include("start-session.php");
 
-if (!array_key_exists("user", $_SESSION)) {
-    die("{\"status\": \"fail\", \"message\": \"Not logged in.\"}");;
-} else if (array_key_exists("by-session", $_GET)) {
+if (array_key_exists("by-session", $_GET) && array_key_exists("user", $_SESSION)) {
     $conn = new mysqli("localhost:3306", "sso", "", "SSO");
     $stmt = $conn->prepare("CALL create_quick_auth(?)");
     $stmt->bind_param("i", $_SESSION["user"]["id"]);
