@@ -18,13 +18,11 @@ if (array_key_exists("by-session", $_GET) && array_key_exists("user", $_SESSION)
     die("{\"status\": \"success\", \"token\": \"" . $res["t"] . "\"}");
 }
 
-if ($_SERVER["CONTENT_TYPE"] == "application/json") {
-    $_POST = json_decode(file_get_contents("php://input"), true);
-}
+$request = json_decode(file_get_contents("php://input"), true);
 
 if (array_key_exists("DEBUG", $_GET)) {
     echo "<p>In debug mode.</p>";
-    print_r($_POST);
+    print_r($request);
 }
 
 $DB_server = "localhost:3306";
@@ -32,12 +30,12 @@ $DB_user = "sso";
 $DB_pass = "";
 $DB_schema = "SSO";
 
-if (array_key_exists("quick-auth-token", $_POST)) {
+if (array_key_exists("quick-auth-token", $request)) {
 
     try {
         $conn = new mysqli($DB_server, $DB_user, $DB_pass, $DB_schema);
         $stmt = $conn->prepare("SELECT Users.* FROM QuickAuth JOIN Users on Users.id = QuickAuth.id WHERE tokenHash = SHA2(?, 256)");
-        $stmt->bind_param("s", $_POST["quick-auth-token"]);
+        $stmt->bind_param("s", $request["quick-auth-token"]);
         $stmt->execute(); $set = $stmt->get_result();
 
         $res = $set->fetch_assoc();
@@ -57,17 +55,17 @@ if (array_key_exists("quick-auth-token", $_POST)) {
     }
 }
 
-if (!(array_key_exists("username", $_POST) && array_key_exists("password", $_POST))) {
+if (!(array_key_exists("username", $request) && array_key_exists("password", $request))) {
     die("{\"status\": \"fail\", \"message\": \"Invalid request.\"}");
 }
 
-else if ($_POST["username"] == "" || $_POST["password"] == "") {
+else if ($request["username"] == "" || $request["password"] == "") {
     $_SESSION["login-error"] = "Please provide both username and password";
     die("{\"status\": \"fail\", \"message\": \"Please provide both username and password.\"}");
 }
 
 if (array_key_exists("DEBUG", $_GET)) {
-    echo "<p>Username: " . $_POST["username"] . "<br>Password: " . $_POST["password"] . "</p>"; 
+    echo "<p>Username: " . $request["username"] . "<br>Password: " . $request["password"] . "</p>"; 
 }
 
 $conn = new mysqli($DB_server, $DB_user, $DB_pass, $DB_schema);
@@ -78,7 +76,7 @@ if ($conn->connect_error) {
 }
 
 $stmt = $conn->prepare("SELECT * FROM Users WHERE username LIKE ?");
-$stmt->bind_param("s", $_POST["username"]);
+$stmt->bind_param("s", $request["username"]);
 $stmt->execute();
 $result = $stmt->get_result();
 $DB_r = $result->fetch_assoc();
@@ -86,7 +84,7 @@ $DB_r = $result->fetch_assoc();
 if (!$DB_r["passwordUpdated"]) {
     die("{\"status\": \"fail\", \"message\": \"You must have updated your password to the new system to use this feature.\"}");
 }
-else if (password_verify($_POST["password"], $DB_r["password"])) {
+else if (password_verify($request["password"], $DB_r["password"])) {
     $stmt->close();
     $stmt = $conn->prepare("CALL create_quick_auth(?)");
     $stmt->bind_param("i", $DB_r["id"]);
