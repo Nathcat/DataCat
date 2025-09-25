@@ -7,15 +7,7 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Accept: application/json");
 
-if ($_SERVER["CONTENT_TYPE"] == "application/json") {
-    $request = json_decode(file_get_contents("php://input"), true);
-}
-else {
-    die(json_encode([
-        "status" => "fail",
-        "message" => "Request must be in JSON format"
-    ]));
-}
+$request = json_decode(file_get_contents("php://input"), true);
 
 $DB_server = "localhost:3306";
 $DB_user = "sso";
