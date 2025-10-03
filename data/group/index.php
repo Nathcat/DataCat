@@ -241,7 +241,28 @@ endif;
                             <button class="red" onclick="confirm_delete_group()">Delete group</button>
                             <button class="green" onclick="send_invite()">Invite a new user to the group</button>
                         <?php endif; ?>
-                
+                        
+                        <?php if ($_SESSION["user"]["id"] == 1) : ?>
+                            <script>
+                                function send_email() {
+                                    fetch("./email-group.php", {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        credentials: "include",
+                                        body: JSON.stringify({
+                                            "group": <?php echo $_GET["id"]; ?>,
+                                            "subject": $("#email-subject").val(),
+                                            "content": $("#email-content").val()
+                                        })
+                                    });
+                                }
+                            </script>
+
+                            <input id="email-subject" type="text" placeholder="Email subject"></input>
+                            <textarea id="email-content" placeholder="Email content"></textarea>
+
+                            <button onclick="send_email()">Send email to group</button> 
+                        <?php endif; ?>
                     <?php endif;
                 } catch (Exception $e) {
                     $conn->close();
