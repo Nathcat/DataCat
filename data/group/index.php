@@ -254,6 +254,9 @@ endif;
                                             "subject": $("#email-subject").val(),
                                             "content": $("#email-content").val()
                                         })
+                                    }).then((r) => r.json()).then((r) => {
+                                        if (r.status === "success") alert("Email sent");
+                                        else alert(r.message);
                                     });
                                 }
                             </script>
