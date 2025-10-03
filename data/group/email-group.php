@@ -1,5 +1,5 @@
 <?php
-include("../start-session.php");
+include("../../start-session.php");
 
 header("Content-Type: application/json");
 header("Accept: application/json");
