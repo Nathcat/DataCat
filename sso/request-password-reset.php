@@ -27,7 +27,7 @@ if ($conn->connect_error) {
 }
 
 try {
-    $stmt = $conn->prepare("CALL reqeust_password_reset(?);");
+    $stmt = $conn->prepare("CALL request_password_reset(?);");
     $stmt->bind_param("d", $request["id"]);
     
     if ($stmt->execute()) {
