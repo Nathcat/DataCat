@@ -7,12 +7,10 @@ header("Accept: application/json");
 $request = json_decode(file_get_contents("php://input"), true);
 
 if (!array_key_exists("id", $request)) {
-    die(
-        json_encode([
-            "status" => "fail",
-            "message" => "Please specify the user ID"
-        ])
-    )
+    die(json_encode([
+        "status" => "fail",
+        "message" => "Please specify the user ID"
+    ]));
 }
 
 $DB_server = "localhost:3306";
