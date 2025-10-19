@@ -45,7 +45,7 @@ try {
 } catch (Exception $e) {
     die(json_encode([
         "status" => "fail",
-        "message" => $e
+        "message" => $e->getMessage()
     ]));
 }
 
