@@ -64,6 +64,8 @@
                         </div>
                         <?php
                     endif;
+                } catch (Exception $e) {
+                    echo "<h1>Internal server error!</h1><div class='content-card'><p>$e</p></div>";
                 }
             endif;
         ?>
