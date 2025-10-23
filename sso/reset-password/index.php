@@ -15,6 +15,10 @@
     </head>
     
     <body>
+        <div class="content">
+            <?php include("../header.php"); ?>
+            <div class="main align-center">
+
         <?php if (!array_key_exists("t", $_GET)) : ?>
             <h1>Invalid request!</h1>
             <div class="content-card">
@@ -71,6 +75,9 @@
         ?>
             
         <?php endif ; ?>
-    
+            </div>
+
+            <?php include("../footer.php"); ?>
+        </div>
     </body>
 </html>
