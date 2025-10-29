@@ -132,7 +132,7 @@ function sso_reset_password(t, p1, p2, success_callback, fail_callback) {
                 "password": p1
             })
         }).then((r) => r.json()).then((r) => {
-            if (r.success) success_callback();
+            if (r.status === "success") success_callback();
             else fail_callback(r.message);
         });
     }
