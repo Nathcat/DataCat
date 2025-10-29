@@ -28,7 +28,8 @@ if ($conn->connect_error) {
 
 try {
     $stmt = $conn->prepare("CALL update_password(?, ?)");
-    $stmt->bind_param("ss", $request["t"], $request["password"]);
+    $hash = password_hash($request["password"]);
+    $stmt->bind_param("ss", $request["t"], $hash);
     
     if ($stmt->execute()) {
         echo json_encode([
