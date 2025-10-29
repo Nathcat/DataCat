@@ -117,3 +117,20 @@ function sso_upload_pfp(file) {
         }
     });
 }
+
+function sso_reset_password(t, p1, p2) {
+    if (p1 !== p2) {
+        alert("Passwords do not match!");
+        return;
+    }
+    else {
+        fetch("https://data.nathcat.net/sso/set-new-password.php", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                "t": token,
+                "password": p1
+            })
+        });
+    }
+}

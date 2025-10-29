@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>AuthCat</title>
+        <title>AuthCat - Reset password</title>
 
         <link rel="stylesheet" href="https://nathcat.net/static/css/new-common.css">
-        <link rel="stylesheet" href="styles/sso.css">
+        <link rel="stylesheet" href="/sso/styles/sso.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
         <link rel="icon" href="/sso/AuthCat.png">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script src="js/sso.js"></script>
-        <script src="js/user-search.js"></script>
+        <script src="/sso/js/sso.js"></script>
+        <script src="/sso/js/user-search.js"></script>
     </head>
     
     <body>
@@ -54,6 +54,7 @@
                             <div class="content-card">
                                 <input id="pass1" type="text" placeholder="New password..." />
                                 <input id="pass2" type="text" placeholder="New password again..." />
+                                <button click="sso_reset_password('<?php echo $_GET['t']; ?>', $('#pass1').val(), $('#pass2').val())">Submit new password</button>
                             </div>
                         <?php
                     else :
