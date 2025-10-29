@@ -137,3 +137,17 @@ function sso_reset_password(t, p1, p2, success_callback, fail_callback) {
         });
     }
 }
+
+function sso_forgot_password(success_callback, fail_callback) {
+    let email = prompt("Please enter the email address associated with your account.");
+    fetch("https://data.nathcat.net/sso/request-password-reset.php", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            "email": email
+        })
+    }).then((r) => r.json()).then((r) => {
+        if (r.status === "success") success_callback();
+        else fail_callback(r.message);
+    });
+}

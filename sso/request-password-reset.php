@@ -6,10 +6,10 @@ header("Accept: application/json");
 
 $request = json_decode(file_get_contents("php://input"), true);
 
-if (!array_key_exists("id", $request)) {
+if (!array_key_exists("email", $request)) {
     die(json_encode([
         "status" => "fail",
-        "message" => "Please specify the user ID"
+        "message" => "Please specify the user email"
     ]));
 }
 
@@ -28,7 +28,7 @@ if ($conn->connect_error) {
 
 try {
     $stmt = $conn->prepare("CALL request_password_reset(?);");
-    $stmt->bind_param("d", $request["id"]);
+    $stmt->bind_param("s", $request["email"]);
     
     if ($stmt->execute()) {
         echo json_encode([
