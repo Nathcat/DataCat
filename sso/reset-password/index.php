@@ -54,7 +54,7 @@
                             <div class="content-card">
                                 <input id="pass1" type="text" placeholder="New password..." />
                                 <input id="pass2" type="text" placeholder="New password again..." />
-                                <button onclick="sso_reset_password('<?php echo $_GET['t']; ?>', $('#pass1').val(), $('#pass2').val())">Submit new password</button>
+                                <button onclick="sso_reset_password('<?php echo $_GET['t']; ?>', $('#pass1').val(), $('#pass2').val(), (r) => { location = 'https://data.nathcat.net'; }, alert)">Submit new password</button>
                             </div>
                         <?php
                     else :

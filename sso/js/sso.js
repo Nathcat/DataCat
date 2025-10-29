@@ -118,7 +118,7 @@ function sso_upload_pfp(file) {
     });
 }
 
-function sso_reset_password(t, p1, p2) {
+function sso_reset_password(t, p1, p2, success_callback, fail_callback) {
     if (p1 !== p2) {
         alert("Passwords do not match!");
         return;
@@ -131,6 +131,9 @@ function sso_reset_password(t, p1, p2) {
                 "t": t,
                 "password": p1
             })
+        }).then((r) => r.json()).then((r) => {
+            if (r.success) success_callback();
+            else fail_callback(r.message);
         });
     }
 }
