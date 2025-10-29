@@ -28,7 +28,7 @@ if ($conn->connect_error) {
 
 try {
     $stmt = $conn->prepare("CALL update_password(?, ?)");
-    $hash = password_hash($request["password"]);
+    $hash = password_hash($request["password"], PASSWORD_DEFAULT);
     $stmt->bind_param("ss", $request["t"], $hash);
     
     if ($stmt->execute()) {
