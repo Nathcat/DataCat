@@ -54,8 +54,17 @@
                             <div class="content-card column">
                                 <input id="pass1" type="password" placeholder="New password..." />
                                 <input id="pass2" type="password" placeholder="New password again..." />
-                                <button onclick="sso_reset_password('<?php echo $_GET['t']; ?>', $('#pass1').val(), $('#pass2').val(), (r) => { alert('Password reset successfully!'); location = 'https://data.nathcat.net/sso'; }, alert)">Submit new password</button>
+                                <button id="submit" onclick="sso_reset_password('<?php echo $_GET['t']; ?>', $('#pass1').val(), $('#pass2').val(), (r) => { alert('Password reset successfully!'); location = 'https://data.nathcat.net/sso'; }, alert)">Submit new password</button>
                             </div>
+                            <script>
+                                $("#pass1").keyup(function (event) {
+                                    if (event.keyCode === 13) $("#pass2").focus();
+                                });
+
+                                $("#pass2").keyup(function (event) {
+                                    if (event.keyCode === 13) $("#submit").click();
+                                });
+                            </script>
                         <?php
                     else :
                         $stmt->close();
