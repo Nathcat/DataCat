@@ -6,7 +6,7 @@ header("Accept: application/json");
 
 $request = json_decode(file_get_contents("php://input"), true);
 
-if (!array_key_exists("t", $request) || !array_key_exists("password")) {
+if (!array_key_exists("t", $request) || !array_key_exists("password", $request)) {
     die(json_encode([
         "status" => "fail",
         "message" => "Please specify reset token and password"
