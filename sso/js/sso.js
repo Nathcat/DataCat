@@ -128,7 +128,7 @@ function sso_reset_password(t, p1, p2) {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                "t": token,
+                "t": t,
                 "password": p1
             })
         });
