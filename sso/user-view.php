@@ -7,8 +7,7 @@ if (array_key_exists("newPfpPath", $_GET)) {
     $stmt->bind_param("si", $_GET["newPfpPath"], $_SESSION["user"]["id"]);
     $stmt->execute(); $stmt->close(); $conn->close();
 }
-
-if ($_SESSION["user"]["passwordUpdated"]) : ?>
+?>
 
 <div class="user-view-container">
     <div style="grid-area: user-data; width: 100%;" class="column justify-center align-center">
@@ -64,37 +63,3 @@ if ($_SESSION["user"]["passwordUpdated"]) : ?>
         </div>
     </div>
 </div>
-
-<?php else : ?>
-<div class="error-card">
-    <h2>Password update!</h2>
-    <p>
-        In response to feedback on the security of the password system in place on AuthCat, the password system has been updated and improved,
-        however this means that all users are required to update their passwords.
-    </p>
-    <p>
-        You can put the same password in again if you wish, although it is of course suggested that you choose a new, more secure password.
-    </p>
-</div>
-
-<div class="column align-center justify-center">
-    <input type="password" id="new-password" placeholder="Enter your new password..." />
-    <input type="password" id="new-password2" placeholder="Repeat your new password..." />
-    <button onclick="sso_update_password(document.getElementById('new-password').value, document.getElementById('new-password2').value)">Submit new password</button>
-</div>
-
-<script>
-    document.getElementById("new-password").addEventListener("keypress", (e) => { 
-        if (e.key == "Enter") {
-            sso_update_password(document.getElementById('new-password').value, document.getElementById('new-password2').value)
-        } 
-    });
-
-    document.getElementById("new-password2").addEventListener("keypress", (e) => { 
-        if (e.key == "Enter") {
-            sso_update_password(document.getElementById('new-password').value, document.getElementById('new-password2').value)
-        } 
-    });
-</script>
-
-<?php endif; ?>

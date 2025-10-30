@@ -37,6 +37,8 @@
         <a href="https://blog.nathcat.net/?page=16" style="margin: 25px;">How does this page work?</a>
 
         <button onclick="location = '?newUser';">Create a new user</button>
+
+        <button onclick="sso_forgot_password(() => { alert('A link to reset your password has been sent to the provided email.'); }, alert)">Forgot password</button>
     </div>
 
     <div class="sliding-entry-container">
