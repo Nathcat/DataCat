@@ -41,9 +41,9 @@ $filter_options = [
 ];
 
 if (
-    filter_var($_POST["username"], FILTER_VALIDATE_REGEXP, $filter_options) ||
-    filter_var($_POST["fullName"], FILTER_VALIDATE_REGEXP, $filter_options) ||
-    filter_var($_POST["email"], FILTER_VALIDATE_REGEXP, $filter_options)
+    !filter_var($_POST["username"], FILTER_VALIDATE_REGEXP, $filter_options) ||
+    !filter_var($_POST["fullName"], FILTER_VALIDATE_REGEXP, $filter_options) ||
+    !filter_var($_POST["email"], FILTER_VALIDATE_REGEXP, $filter_options)
 ) {
     die(json_encode([
         "status" => "fail",
