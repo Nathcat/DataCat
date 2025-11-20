@@ -56,11 +56,8 @@
 
                 if (response.status === "success") {
                     fd.set("user", JSON.stringify(response.user));
-                    <?php
-                    if (array_key_exists("return-page", $_GET)): ?>
-                        window.location = "<?php echo $_GET["return-page"]; ?>";
-                    <?php endif; ?>
-
+                    const redir = new URLSearchParams(window.location.search).get("return-page");
+                    if (redir) window.location = redir;
                     location.reload();
                     return;
                 }
@@ -87,10 +84,8 @@
                     return;
                 }
 
-                <?php
-                if (array_key_exists("return-page", $_GET)): ?>
-                    window.location = "<?php echo $_GET["return-page"]; ?>";
-                <?php endif; ?>
+                const redir = new URLSearchParams(window.location.search).get("return-page");
+                if (redir) window.location = redir;
 
                 location.reload();
             }
