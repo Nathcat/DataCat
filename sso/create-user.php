@@ -32,6 +32,25 @@ if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
     ]));
 }
 
+// Check for HTML tags in user data
+$filter_options = [
+    "options" => [
+        "default" => false,
+        "regexp" => "/^[^<|>]*$/"
+    ]
+];
+
+if (
+    !filter_var($_POST["username"], FILTER_VALIDATE_REGEXP, $filter_options) ||
+    !filter_var($_POST["fullName"], FILTER_VALIDATE_REGEXP, $filter_options) ||
+    !filter_var($_POST["email"], FILTER_VALIDATE_REGEXP, $filter_options)
+) {
+    die(json_encode([
+        "status" => "fail",
+        "message" => "Invalid characters in input! The following characters are not allowed in your username / full name / email: '<', '>'"
+    ]));
+}
+
 $DB_server = "localhost:3306";
 $DB_user = "sso";
 $DB_pass = "";
