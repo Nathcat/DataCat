@@ -55,6 +55,13 @@ try {
     while ($row = $set->fetch_assoc()) {
         array_push($users, $row);
     }
+
+    $stmt->close();
+    $stmt = $conn->prepare("SELECT SSO.Users.id, SSO.Users.username, SSO.Users.fullName, SSO.Users.pfpPath FROM `Groups` JOIN SSO.Users ON SSO.Users.id = `Groups`.`owner` WHERE `Groups`.id = ?");
+    $stmt->bind_param("i", $request["group"]);
+    $stmt->execute();
+
+    $owner = $stmt->get_result()->fetch_assoc();
 } catch (Exception $e) {
     $conn->close();
     die("{\"status\": \"fail\", \"message\": \"$e\"}");
@@ -64,5 +71,6 @@ $conn->close();
 
 echo json_encode([
     "status" => "success",
+    "owner" => $owner,
     "members" => $users
 ]);
