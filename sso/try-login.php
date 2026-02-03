@@ -17,6 +17,13 @@ $conn = new mysqli($DB_server, $DB_user, $DB_pass, $DB_schema);
 
 $quick_auth_failed = false;
 
+if ($request === null) {
+  exit(json_encode([
+    "status" => "fail",
+    "message" => "No request supplied!"
+  ]));
+}
+
 if (array_key_exists("quick-auth-token", $request)) {
     // Attempt quick auth
 
