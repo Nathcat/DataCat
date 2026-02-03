@@ -26,6 +26,8 @@ dependencies {
 
     // Source: https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation("com.google.code.gson:gson:2.13.2")
+
+    implementation(project(":Java-SQL"))
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

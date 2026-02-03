@@ -11,4 +11,5 @@ plugins {
 }
 
 rootProject.name = "DataCat"
-include("app")
+include("app", "Java-SQL")
+project(":Java-SQL").projectDir = file("Java-SQL/lib")
