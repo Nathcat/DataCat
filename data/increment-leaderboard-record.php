@@ -130,7 +130,7 @@ if ($success) {
 
         $stmt->close();
         $stmt = $conn->prepare("SELECT name FROM Leaderboards WHERE id = ?");
-        $stmt->bind_param("i", $request["leaderboardId");
+        $stmt->bind_param("i", $request["leaderboardId"]);
         $stmt->execute();
         $leaderboard_name = $stmt->get_result()->fetch_assoc()["name"];
         $stmt->close();
