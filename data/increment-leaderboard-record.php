@@ -129,7 +129,7 @@ if ($success) {
         $username = $stmt->get_result()->fetch_assoc()["username"];
 
         $stmt->close();
-        $stmt = $conn->prepare("SELECT name FROM Leaderboards WHERE id = ?");
+        $stmt = $conn->prepare("SELECT * FROM Leaderboards WHERE id = ?");
         $stmt->bind_param("i", $request["leaderboardId"]);
         $stmt->execute();
         $result = $stmt->get_result()->fetch_assoc();
