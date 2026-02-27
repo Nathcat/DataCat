@@ -143,9 +143,29 @@ if ($success) {
     }
 
     $data = array(
-        "content" => $username . " has " . ($added ? "received " : "lost ") . $request["value"] . " points!\n[View _" . $leaderboard_name . "_](https://data.nathcat.net/data/leaderboard/?id=" . $leaderboard_id . ")",
+        //"content" => $username . " has " . ($added ? "received " : "lost ") . $request["value"] . " points!\n[View _" . $leaderboard_name . "_](https://data.nathcat.net/data/leaderboard/?id=" . $leaderboard_id . ")",
         "username" => $leaderboard_name,
-        "avatar_url" => "https://cdn.nathcat.net/cloud/116bc634-b69a-11ef-9adc-067048c6a237.png"
+        "avatar_url" => "https://cdn.nathcat.net/cloud/116bc634-b69a-11ef-9adc-067048c6a237.png",
+        "embeds" => [
+            array(
+                "color" => "#deddda",
+                "title" => $leaderboard_name,
+                "url" => "https://data.nathcat.net/data/leaderboard/?id=" . $leaderboard_id,
+                "author" => array(
+                    "name" => "DataCat",
+                    "icon_url" => "https://cdn.nathcat.net/cloud/116bc634-b69a-11ef-9adc-067048c6a237.png",
+                    "url" => "https://data.nathcat.net"
+                ),
+                "description" => $username . " has " . ($added ? "received " : "lost ") . $request["value"] . " points!",
+                "thumbnail" => array(
+                    "url" => "https://cdn.nathcat.net/cloud/116bc634-b69a-11ef-9adc-067048c6a237.png"
+                ),
+                "footer" => array (
+                    "text" => "DataCat © Nathcat 2024 - " . date("Y"),
+                    "icon_url" => ""
+                )
+            )
+        ]
     );
 
     $options = array(
