@@ -146,7 +146,7 @@ if ($success) {
         //"content" => $username . " has " . ($added ? "received " : "lost ") . $request["value"] . " points!\n[View _" . $leaderboard_name . "_](https://data.nathcat.net/data/leaderboard/?id=" . $leaderboard_id . ")",
         "username" => $leaderboard_name,
         "avatar_url" => "https://cdn.nathcat.net/cloud/116bc634-b69a-11ef-9adc-067048c6a237.png",
-        "embeds" => [
+        "embeds" => array(
             array(
                 "color" => "#deddda",
                 "title" => $leaderboard_name,
@@ -165,7 +165,7 @@ if ($success) {
                     "icon_url" => ""
                 )
             )
-        ]
+        )
     );
 
     $options = array(
