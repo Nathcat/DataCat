@@ -127,6 +127,14 @@ if ($success) {
         $stmt->bind_param("i", $request["user"]);
         $stmt->execute();
         $username = $stmt->get_result()->fetch_assoc()["username"];
+
+        $stmt->close();
+        $stmt = $conn->prepare("SELECT name FROM Leaderboards WHERE id = ?");
+        $stmt->bind_param("i", $request["leaderboardId");
+        $stmt->execute();
+        $leaderboard_name = $stmt->get_result()->fetch_assoc()["name"];
+        $stmt->close();
+        
     } catch (Exception $e) {
         $conn->close();
         exit(0);
@@ -134,7 +142,7 @@ if ($success) {
 
     $data = array(
         "content" => $username . " has " . ($added ? "received " : "lost ") . $request["value"] . " points!",
-        "username" => "DataCat",
+        "username" => $leaderboard_name,
         "avatar_url" => "https://cdn.nathcat.net/cloud/116bc634-b69a-11ef-9adc-067048c6a237.png"
     );
 
