@@ -148,7 +148,7 @@ if ($success) {
         "avatar_url" => "https://cdn.nathcat.net/cloud/116bc634-b69a-11ef-9adc-067048c6a237.png",
         "embeds" => array(
             array(
-                "color" => "#deddda",
+                "color" => 14605786,
                 "title" => $leaderboard_name,
                 "url" => "https://data.nathcat.net/data/leaderboard/?id=" . $leaderboard_id,
                 "author" => array(
