@@ -168,6 +168,8 @@ if ($success) {
         )
     );
 
+    echo json_encode($data);
+
     $options = array(
       'http' => array(
         'method'  => 'POST',
