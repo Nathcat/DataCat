@@ -162,7 +162,7 @@ if ($success) {
                 ),
                 "footer" => array (
                     "text" => "DataCat © Nathcat 2024 - " . date("Y"),
-                    "icon_url" => ""
+                    "icon_url" => "https://cdn.nathcat.net/cloud/116bc634-b69a-11ef-9adc-067048c6a237.png"
                 )
             )
         )
