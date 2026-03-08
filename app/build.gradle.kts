@@ -13,6 +13,10 @@ plugins {
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+    maven {
+        name = "nathcatMvn"
+        url = uri("https://mvn.nathcat.net/releases")
+    }
 }
 
 dependencies {
@@ -27,7 +31,9 @@ dependencies {
     // Source: https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation("com.google.code.gson:gson:2.13.2")
 
-    implementation(project(":Java-SQL"))
+    implementation("net.nathcat:sql:1.0.0")
+    implementation("net.nathcat:api:1.1.1")
+    implementation("net.nathcat:ssl:1.0.0")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
