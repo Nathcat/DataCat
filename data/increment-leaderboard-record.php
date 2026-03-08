@@ -123,10 +123,10 @@ try {
 
 if ($success) {
     try {
-        $stmt = $conn->prepare("SELECT username FROM SSO.Users WHERE id = ?");
+        $stmt = $conn->prepare("SELECT * FROM SSO.Users WHERE id = ?");
         $stmt->bind_param("i", $request["user"]);
         $stmt->execute();
-        $username = $stmt->get_result()->fetch_assoc()["username"];
+        $userd = $stmt->get_result()->fetch_assoc();
 
         $stmt->close();
         $stmt = $conn->prepare("SELECT * FROM Leaderboards WHERE id = ?");
@@ -144,7 +144,7 @@ if ($success) {
 
     $data = array(
         //"content" => $username . " has " . ($added ? "received " : "lost ") . $request["value"] . " points!\n[View _" . $leaderboard_name . "_](https://data.nathcat.net/data/leaderboard/?id=" . $leaderboard_id . ")",
-        "username" => $leaderboard_name,
+        "username" => "DataCat - Leaderboards",
         "avatar_url" => "https://cdn.nathcat.net/cloud/116bc634-b69a-11ef-9adc-067048c6a237.png",
         "embeds" => array(
             array(
@@ -156,9 +156,9 @@ if ($success) {
                     "icon_url" => "https://cdn.nathcat.net/cloud/116bc634-b69a-11ef-9adc-067048c6a237.png",
                     "url" => "https://data.nathcat.net"
                 ),
-                "description" => $username . " has " . ($added ? "received " : "lost ") . $request["value"] . " points!",
+                "description" => $userd["username"] . " has " . ($added ? "received " : "lost ") . $request["value"] . " points!",
                 "thumbnail" => array(
-                    "url" => "https://cdn.nathcat.net/cloud/116bc634-b69a-11ef-9adc-067048c6a237.png"
+                    "url" => "https://cdn.nathcat.net/pfps/" . $userd["pfpPath"]
                 ),
                 "footer" => array (
                     "text" => "DataCat © Nathcat 2024 - " . date("Y"),
