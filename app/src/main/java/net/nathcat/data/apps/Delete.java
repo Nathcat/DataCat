@@ -16,16 +16,16 @@ import net.nathcat.data.Utils;
 import net.nathcat.sql.Query;
 
 /**
- * New app endpoint
+ * Delete app endpoint
  *
  */
-public final class New extends ApiHandler {
+public final class Delete extends ApiHandler {
 
   public final static class Request {
-    public String name;
+    public int app;
   }
 
-  protected New(Server server, String loggerName) {
+  protected Delete(Server server, String loggerName) {
     super(server, loggerName, new String[] { "POST" });
   }
 
@@ -39,17 +39,17 @@ public final class New extends ApiHandler {
 
     try {
       // Check if the user is permitted to access DataCat
-      if (!Utils.isPermitted(server.db, user)) {
+      if (!Utils.isPermitted(server.db, user) || !Utils.ownsApp(server.db, user, request.app)) {
         writeError(ex, 403);
         return;
       }
 
-      // Create the new app record
+      // Delete the app record
       try {
-        Query q = server.db.newQuery("INSERT INTO Apps (`owner`, `name`, `apiKey`) VALUES (?, ?, SHA2(UUID(), 256))");
+        Query q = server.db.newQuery("DELETE FROM Apps WHERE `owner` = ? AND `id` = ?");
         q
             .set(1, int.class, user.id)
-            .set(2, String.class, request.name)
+            .set(2, int.class, request.app)
             .executeUpdate();
 
         // Write success response to the client
