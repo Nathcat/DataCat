@@ -14,7 +14,8 @@ public final class AppsModule implements Module {
   @Override
   public ContextPair[] contexts() {
     return new ContextPair[] {
-        new ContextPair("new", New.class)
+        new ContextPair("new", New.class),
+        new ContextPair("delete", Delete.class)
     };
   }
 
