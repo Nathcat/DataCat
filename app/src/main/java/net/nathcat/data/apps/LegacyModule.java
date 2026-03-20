@@ -4,19 +4,19 @@ import net.nathcat.api.ContextPair;
 import net.nathcat.api.Module;
 import net.nathcat.api.ServerCommand;
 
-public final class AppsModule implements Module {
+public class LegacyModule implements Module {
 
   @Override
   public String basePath() {
-    return "/data/apps";
+    return "/data";
   }
 
   @Override
   public ContextPair[] contexts() {
     return new ContextPair[] {
-        new ContextPair("new", New.class),
-        new ContextPair("delete", Delete.class),
-        new ContextPair("get", Get.class)
+        new ContextPair("new-app.php", New.class),
+        new ContextPair("delete-app.php", Delete.class),
+        new ContextPair("get-apps.php", Get.class)
     };
   }
 
