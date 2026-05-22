@@ -6,11 +6,13 @@ project(DataCat)
 
 add_library(DataCat SHARED
   src/Server.cpp
+  src/AuthCat.cpp
 )
 
 target_include_directories(DataCat PUBLIC
   include
   libs/cpp-httplib
+  libs/mysql/include
 )
 
 target_link_libraries(DataCat PUBLIC
