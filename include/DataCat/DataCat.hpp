@@ -10,6 +10,7 @@
 #include <httplib.h>
 #include <memory>
 #include <nlohmann/json.hpp>
+#include <regex>
 namespace nathcat {
 namespace data {
 
@@ -35,6 +36,9 @@ extern sql::Driver *driver;
 struct Config get_config(std::string path);
 
 namespace util {
+
+extern std::regex auth_header_regex;
+
 /**
  * @brief Open a connect to the database specified in the program's config
  *
@@ -62,6 +66,19 @@ void handle_sql_exception(std::string handler, sql::SQLException &e,
  */
 bool assert_request_params(const httplib::Request &req, httplib::Response &res,
                            std::vector<std::string> paramNames);
+
+/**
+ * @brief Get the auth token from a request, if there is one. If one is not
+ * present, AuthFailed will be thrown.
+ */
+std::string get_auth_token(const httplib::Request &req);
+
+/**
+ * @brief Handle a response to an authentication failure
+ */
+void handle_auth_failed(httplib::Response &res);
+
+void handle_ok(httplib::Response &res);
 } // namespace util
 
 } // namespace data

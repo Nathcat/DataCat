@@ -1,10 +1,16 @@
+#include "AuthCat/common.hpp"
+#include <AuthCat/client/auth.hpp>
 #include <DataCat/DataCat.hpp>
 #include <httplib.h>
+#include <regex>
 using namespace nathcat::data;
 
 namespace nathcat {
 namespace data {
 namespace util {
+
+std::regex auth_header_regex("Bearer (.*)");
+
 void nathcat::data::util::open_db_connection(
     std::unique_ptr<sql::Connection> &db, std::string schema) {
   db = std::unique_ptr<sql::Connection>{nathcat::data::driver->connect(
@@ -31,6 +37,27 @@ bool assert_request_params(const httplib::Request &req, httplib::Response &res,
   }
 
   return true;
+}
+
+std::string get_auth_token(const httplib::Request &req) {
+  if (!req.has_header("Authorization"))
+    throw nathcat::auth::AuthFailed();
+
+  std::smatch m;
+  std::string header = req.get_header_value("Authorization");
+  if (std::regex_match(header, m, auth_header_regex)) {
+    return m[1];
+  } else
+    throw auth::AuthFailed();
+}
+
+void handle_auth_failed(httplib::Response &res) {
+  res.status = httplib::StatusCode::Unauthorized_401;
+  res.set_header("WWW-Authenticate", "Bearer");
+}
+
+void handle_ok(httplib::Response &res) {
+  res.status = httplib::StatusCode::OK_200;
 }
 } // namespace util
 } // namespace data

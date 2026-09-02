@@ -7,9 +7,10 @@ add_executable(DataCat src/main.cpp)
 
 target_include_directories(DataCat PUBLIC
 include
-libs/apiservser/include
-libs/apiservser/libs/mysql/include
+libs/apiserver/include
+libs/mysql/include
 libs/json/include
+libs/authcat/include
 )
 
 target_link_libraries(DataCat PUBLIC
@@ -24,7 +25,7 @@ src/json.cpp
 src/util.cpp
 )
 
-target_include_directories(DataCat PUBLIC
+target_link_directories(DataCat PUBLIC
 libs/kitty-committee/authcat
 libs/nathcat/apiserver
 )
