@@ -6,10 +6,18 @@ project(DataCat)
 add_executable(DataCat src/main.cpp)
 
 target_include_directories(DataCat PUBLIC
+include
 libs/apiservser/include
 libs/apiservser/libs/mysql/include
+libs/json/include
 )
 
 target_link_libraries(DataCat PUBLIC
 apiserver
+nlohmann_json::nlohmann_json
+)
+
+target_sources(DataCat PUBLIC
+src/config.cpp
+src/json.cpp
 )

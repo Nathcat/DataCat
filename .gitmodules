@@ -1,3 +1,6 @@
 [submodule "libs/apiserver"]
 	path = libs/apiserver
 	url = https://github.com/Nathcat/CPP-API-Server
+[submodule "libs/json"]
+	path = libs/json
+	url = https://github.com/nlohmann/json

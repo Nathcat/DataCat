@@ -1,14 +1,8 @@
-#include "api/api.hpp"
+#include "DataCat/DataCat.hpp"
 #include <httplib.h>
 
-void f(const httplib::Request &req, httplib::Response &res) {
-  res.status = httplib::StatusCode::OK_200;
-  res.set_content("Hello world :3", "text/plain");
-}
-
 int main() {
-  nathcat::api::Server server;
-  server.registerEndpoint({"/", {f, nullptr}});
+  nathcat::data::config = nathcat::data::get_config("Assets/server_conf.json");
 
-  server.listen("0.0.0.0", 9090);
+  std::cout << "Config port is " << nathcat::data::config.port << std::endl;
 }
