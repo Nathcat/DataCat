@@ -1,2 +1,1 @@
-add_subdirectory(cpp-httplib)
-add_subdirectory(mysql)
+add_subdirectory(apiserver)
