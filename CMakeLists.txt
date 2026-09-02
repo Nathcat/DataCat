@@ -17,6 +17,7 @@ target_include_directories(DataCat PUBLIC
 
 target_link_libraries(DataCat PUBLIC
   httplib
+  connector
 )
 
 project(server)

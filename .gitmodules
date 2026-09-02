@@ -1,6 +1,3 @@
-[submodule "libs/cpp-httplib"]
-	path = libs/cpp-httplib
-	url = https://github.com/yhirose/cpp-httplib
-[submodule "libs/mysql"]
-	path = libs/mysql
-	url = https://github.com/mysql/mysql-connector-cpp
+[submodule "libs/apiserver"]
+	path = libs/apiserver
+	url = https://github.com/Nathcat/CPP-API-Server
