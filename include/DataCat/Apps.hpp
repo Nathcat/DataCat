@@ -5,6 +5,7 @@
 #ifndef APPS_HPP
 #define APPS_HPP
 
+#include "nlohmann/json.hpp"
 #include <httplib.h>
 #include <string>
 namespace nathcat {
@@ -17,6 +18,8 @@ struct App {
   std::string name;
   std::string apiKey;
 };
+
+void to_json(nlohmann::json &j, const struct App &a);
 
 void new_app(const httplib::Request &req, httplib::Response &res);
 void delete_app(const httplib::Request &req, httplib::Response &res);
