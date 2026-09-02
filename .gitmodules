@@ -4,3 +4,6 @@
 [submodule "libs/json"]
 	path = libs/json
 	url = https://github.com/nlohmann/json
+[submodule "libs/authcat"]
+	path = libs/authcat
+	url = https://github.com/kitty-committee/authcat

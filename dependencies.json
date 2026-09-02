@@ -1,0 +1,4 @@
+[
+  "kitty-committee/authcat/libAuthCat-Client.a",
+  "nathcat/apiserver/libapiserver.a"
+]
