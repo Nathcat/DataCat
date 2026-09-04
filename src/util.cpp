@@ -11,8 +11,8 @@ namespace util {
 
 std::regex auth_header_regex("Bearer (.*)");
 
-void nathcat::data::util::open_db_connection(
-    std::unique_ptr<sql::Connection> &db, std::string schema) {
+void open_db_connection(std::unique_ptr<sql::Connection> &db,
+                        std::string schema) {
   db = std::unique_ptr<sql::Connection>{nathcat::data::driver->connect(
       data::config.db.uri, data::config.db.username, data::config.db.password)};
   db->setSchema(schema);

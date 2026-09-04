@@ -7,3 +7,6 @@
 [submodule "libs/authcat"]
 	path = libs/authcat
 	url = https://github.com/kitty-committee/authcat
+[submodule "libs/httplib"]
+	path = libs/httplib
+	url = https://github.com/yhirose/cpp-httplib
