@@ -12,6 +12,11 @@ tracing-subscriber = "0.3.23"
 dotenvy = "0.15.7"
 envy = "0.4.2"
 serde = "1.0.229"
+serde_json = "1.0.151"
 
 mysql = "28.0.2"
 sqlite = "0.37.0"
+
+reqwest = { version = "0.13.5", features = ["blocking", "json"] }
+
+regex = "1.13.1"

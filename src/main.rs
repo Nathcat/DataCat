@@ -3,11 +3,43 @@ use std::process::exit;
 use mysql::Pool;
 use salvo::prelude::*;
 
+use regex::regex;
+
+use crate::authcat::AuthCat;
+
 pub mod config;
 pub mod authcat;
 pub mod db;
 pub mod apps;
 
+#[handler]
+async fn test(depot: &mut Depot, req: &mut Request, res: &mut Response) -> String {
+    let authcat = depot.get_typed::<AuthCat>().unwrap();
+    
+    let token: String;
+    let header = String::from(req.header("Authorization").unwrap_or(""));
+    if let Some(caps) = regex!(r"Bearer (?<token>.*)").captures(&header) {
+        token = caps["token"].to_owned();
+    }
+    else {
+        return String::from("You have not correctly supplied a bearer token!");
+    }
+
+    match authcat.authenticate_token(&token).await {
+        Ok(user) => {
+            if let Err(error) = res.add_header("Content-Type", "application/json", true) {
+                return error.to_string();
+            }
+
+            serde_json::to_string(&user).unwrap()
+        }
+
+        Err(error) => {
+            error.message
+        }
+    }
+
+}
 
 #[tokio::main]
 async fn main () {
@@ -23,12 +55,12 @@ async fn main () {
         _ => {}
     }
     
-    let authcat_config = match config::init_config::<authcat::Config>() {
+    let authcat = match config::init_config::<authcat::AuthCat>() {
         Some(v) => v,
         _ => exit(1)
     };
 
-    println!("{:#?}", authcat_config);
+    println!("{:#?}", authcat);
 
     let db_config = match config::init_config::<db::Config>() {
         Some(v) => v,
@@ -45,9 +77,10 @@ async fn main () {
 
     let router = Router::new()
         .hoop(
-            affix_state::inject(authcat_config)
+            affix_state::inject(authcat)
                 .inject(db_pool)
-        );
+        )
+    .push(Router::with_path("/test").get(test));
 
     Server::new(acceptor).serve(router).await;
 }
