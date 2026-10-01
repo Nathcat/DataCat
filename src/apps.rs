@@ -1,5 +1,5 @@
-pub mod endpoints;
 mod db;
+pub mod endpoints;
 
 struct App {
     id: u32,
