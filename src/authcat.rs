@@ -23,6 +23,14 @@ pub struct User {
     verified: u8,
 }
 
+#[async_trait]
+impl Writer for User {
+    async fn write(self, _req: &mut Request, _depot: &mut Depot, res: &mut Response) {
+        res.status_code(StatusCode::OK);
+        res.render(serde_json::to_string(&self).unwrap());
+    }
+}
+
 #[derive(Debug)]
 pub struct AuthError {
     pub message: String,
@@ -34,6 +42,13 @@ impl fmt::Display for AuthError {
     }
 }
 impl Error for AuthError {}
+#[async_trait]
+impl Writer for AuthError {
+    async fn write(self, _req: &mut Request, _depot: &mut Depot, res: &mut Response) {
+        res.status_code(StatusCode::UNAUTHORIZED);
+        res.render(&self.message);
+    }
+}
 
 pub type AccessToken = String;
 

@@ -3,7 +3,7 @@ use std::process::exit;
 use mysql::Pool;
 use salvo::prelude::*;
 
-use crate::authcat::{AuthCat, require_authenticated};
+use crate::authcat::{AuthCat, AuthError, User, require_authenticated};
 
 pub mod apps;
 pub mod authcat;
@@ -11,16 +11,9 @@ pub mod config;
 pub mod db;
 
 #[handler]
-async fn test(depot: &mut Depot, req: &mut Request, res: &mut Response) -> String {
+async fn test(depot: &mut Depot, req: &mut Request, res: &mut Response) -> Result<User, AuthError> {
     let authcat = depot.get_typed::<AuthCat>().unwrap();
-    if let Ok(user) = require_authenticated(req, res, authcat).await {
-        match serde_json::to_string(&user) {
-            Ok(str) => str,
-            Err(error) => error.to_string(),
-        }
-    } else {
-        String::from("Not authenticated!")
-    }
+    require_authenticated(req, res, authcat).await
 }
 
 #[tokio::main]
