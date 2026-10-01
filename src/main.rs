@@ -3,9 +3,7 @@ use std::process::exit;
 use mysql::Pool;
 use salvo::prelude::*;
 
-use regex::regex;
-
-use crate::authcat::AuthCat;
+use crate::authcat::{AccessToken, AuthCat, get_access_token_from_request};
 
 pub mod config;
 pub mod authcat;
@@ -15,11 +13,9 @@ pub mod apps;
 #[handler]
 async fn test(depot: &mut Depot, req: &mut Request, res: &mut Response) -> String {
     let authcat = depot.get_typed::<AuthCat>().unwrap();
-    
-    let token: String;
-    let header = String::from(req.header("Authorization").unwrap_or(""));
-    if let Some(caps) = regex!(r"Bearer (?<token>.*)").captures(&header) {
-        token = caps["token"].to_owned();
+    let token: AccessToken;
+    if let Some(t) = get_access_token_from_request(req) {
+        token = t;
     }
     else {
         return String::from("You have not correctly supplied a bearer token!");

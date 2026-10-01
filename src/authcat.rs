@@ -1,6 +1,7 @@
 use core::fmt;
 use std::error::Error;
 
+use regex::regex;
 use salvo::prelude::*;
 
 use serde::Deserialize;
@@ -62,4 +63,18 @@ impl AuthCat {
             Err(AuthError { message: String::from("Failed to make authentication request") })
         }
     }
+}
+
+/// Get an access token from a request object by parsing the authentication header
+///
+/// * `req`: The request
+pub fn get_access_token_from_request(req: &mut Request) -> Option<AccessToken> {
+    let header = String::from(req.header("Authorization").unwrap_or(""));
+    if let Some(caps) = regex!(r"Bearer (?<token>.*)").captures(&header) {
+        Some(caps["token"].to_owned())
+    }
+    else {
+        None
+    }
+
 }
