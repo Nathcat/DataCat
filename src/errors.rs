@@ -1,3 +1,5 @@
+use std::error::Error;
+
 use salvo::http::ParseError;
 use salvo::prelude::*;
 use salvo::{Writer, async_trait};
@@ -16,13 +18,27 @@ pub enum ApiError {
 
 impl std::fmt::Display for ApiError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "ApiError: {}", self.to_string())
+        write!(
+            f,
+            "ApiError::{}: {}",
+            match self {
+                ApiError::AuthError(_) => "AuthError",
+                ApiError::ParseError(_) => "ParseError",
+                ApiError::SqlError(_) => "SqlError",
+            },
+            match self.source() {
+                Some(e) => e.to_string(),
+                None => String::from("No source error"),
+            }
+        )
     }
 }
 
 #[async_trait]
 impl Writer for ApiError {
     async fn write(self, req: &mut Request, depot: &mut Depot, res: &mut Response) {
+        eprintln!("{}", self.to_string());
+
         if let ApiError::AuthError(_) = self {
             if let Err(e) = res.add_header("WWW-Authenticate", "Bearer", true) {
                 eprintln!(

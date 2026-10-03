@@ -1,3 +1,5 @@
+use std::any::Any;
+
 use salvo::http::ParseError;
 use salvo::prelude::*;
 use salvo::{Depot, Writer, async_trait};
