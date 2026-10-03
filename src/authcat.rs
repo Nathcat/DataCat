@@ -7,6 +7,8 @@ use salvo::prelude::*;
 use serde::Deserialize;
 use serde::Serialize;
 
+use crate::errors::ApiError;
+
 #[derive(Deserialize, Default, Clone, Debug)]
 pub struct AuthCat {
     auth_url: String,
@@ -15,20 +17,12 @@ pub struct AuthCat {
 #[allow(non_snake_case)]
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
 pub struct User {
-    id: u32,
-    username: String,
-    fullName: String,
-    email: String,
-    pfpPath: String,
-    verified: u8,
-}
-
-#[async_trait]
-impl Writer for User {
-    async fn write(self, _req: &mut Request, _depot: &mut Depot, res: &mut Response) {
-        res.status_code(StatusCode::OK);
-        res.render(serde_json::to_string(&self).unwrap());
-    }
+    pub id: u32,
+    pub username: String,
+    pub fullName: String,
+    pub email: String,
+    pub pfpPath: String,
+    pub verified: u8,
 }
 
 #[derive(Debug)]
@@ -42,13 +36,6 @@ impl fmt::Display for AuthError {
     }
 }
 impl Error for AuthError {}
-#[async_trait]
-impl Writer for AuthError {
-    async fn write(self, _req: &mut Request, _depot: &mut Depot, res: &mut Response) {
-        res.status_code(StatusCode::UNAUTHORIZED);
-        res.render(&self.message);
-    }
-}
 
 pub type AccessToken = String;
 

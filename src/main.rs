@@ -3,18 +3,14 @@ use std::process::exit;
 use mysql::Pool;
 use salvo::prelude::*;
 
-use crate::authcat::{AuthCat, AuthError, User, require_authenticated};
+use crate::{apps::endpoints::new_app, authcat::AuthCat};
 
 pub mod apps;
 pub mod authcat;
 pub mod config;
 pub mod db;
-
-#[handler]
-async fn test(depot: &mut Depot, req: &mut Request, res: &mut Response) -> Result<User, AuthError> {
-    let authcat = depot.get_typed::<AuthCat>().unwrap();
-    require_authenticated(req, res, authcat).await
-}
+pub mod errors;
+pub mod responses;
 
 #[tokio::main]
 async fn main() {
@@ -52,7 +48,7 @@ async fn main() {
 
     let router = Router::new()
         .hoop(affix_state::inject(authcat).inject(db_pool))
-        .push(Router::with_path("/test").get(test));
+        .push(Router::with_path("/api/apps").put(new_app));
 
     Server::new(acceptor).serve(router).await;
 }
