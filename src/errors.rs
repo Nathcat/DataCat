@@ -14,6 +14,7 @@ pub enum ApiError {
     AuthError(#[from] AuthError),
     ParseError(#[from] ParseError),
     SqlError(#[from] mysql::error::Error),
+    SerdeJsonError(#[from] serde_json::Error),
 }
 
 impl std::fmt::Display for ApiError {
@@ -25,6 +26,7 @@ impl std::fmt::Display for ApiError {
                 ApiError::AuthError(_) => "AuthError",
                 ApiError::ParseError(_) => "ParseError",
                 ApiError::SqlError(_) => "SqlError",
+                ApiError::SerdeJsonError(_) => "SerdeJsonError",
             },
             match self.source() {
                 Some(e) => e.to_string(),

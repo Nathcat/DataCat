@@ -1,7 +1,8 @@
 mod db;
 pub mod endpoints;
 
-struct App {
+#[derive(serde::Serialize)]
+pub struct App {
     id: u32,
     owner: u32,
     name: String,

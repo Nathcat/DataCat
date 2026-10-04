@@ -2,10 +2,10 @@ use mysql::Pool;
 use salvo::prelude::*;
 use serde::Deserialize;
 
-use crate::apps::db;
+use crate::apps::{App, db};
 use crate::authcat::{AuthCat, require_authenticated};
 use crate::errors::ApiError;
-use crate::responses::Ok;
+use crate::responses::{JsonVec, Ok};
 
 #[derive(Deserialize)]
 struct NewAppRequest {
@@ -52,6 +52,35 @@ pub async fn new_app(
     }
 }
 
-pub fn get_apps(res: &mut Response) {}
+#[handler]
+pub async fn get_apps(
+    req: &mut Request,
+    res: &mut Response,
+    depot: &mut Depot,
+) -> Result<JsonVec<App>, ApiError> {
+    let authcat = depot.get_typed::<AuthCat>().unwrap();
+    let auth = require_authenticated(req, res, authcat).await;
+
+    if let Ok(user) = auth {
+        let db_pool = depot.get_typed::<Pool>().unwrap();
+
+        let conn = db_pool.get_conn();
+        if let Ok(mut conn) = conn {
+            match db::get_apps_owned_by(&mut conn, &user.id) {
+                Err(e) => {
+                    res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
+                    Err(ApiError::SqlError(e))
+                }
+                Ok(v) => Ok(JsonVec(v)),
+            }
+        } else {
+            res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
+            Err(ApiError::SqlError(conn.unwrap_err()))
+        }
+    } else {
+        res.status_code(StatusCode::UNAUTHORIZED);
+        Err(ApiError::AuthError(auth.unwrap_err()))
+    }
+}
 
 pub fn delete_app(res: &mut Response) {}

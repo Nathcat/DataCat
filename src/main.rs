@@ -3,7 +3,10 @@ use std::process::exit;
 use mysql::Pool;
 use salvo::prelude::*;
 
-use crate::{apps::endpoints::new_app, authcat::AuthCat};
+use crate::{
+    apps::endpoints::{get_apps, new_app},
+    authcat::AuthCat,
+};
 
 pub mod apps;
 pub mod authcat;
@@ -48,7 +51,7 @@ async fn main() {
 
     let router = Router::new()
         .hoop(affix_state::inject(authcat).inject(db_pool))
-        .push(Router::with_path("/api/apps").put(new_app));
+        .push(Router::with_path("/api/apps").put(new_app).get(get_apps));
 
     Server::new(acceptor).serve(router).await;
 }
