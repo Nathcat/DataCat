@@ -34,3 +34,17 @@ pub fn get_apps_owned_by(db: &mut PooledConn, owner: &u32) -> Result<Vec<App>, m
         return Err(r.unwrap_err());
     }
 }
+
+pub fn delete_app(db: &mut PooledConn, app: &u32, owner: &u32) -> Result<bool, mysql::Error> {
+    let r = db.prep("DELETE FROM Apps WHERE `owner` = ? AND `id` = ?");
+
+    if let Ok(stmt) = r {
+        if let Err(error) = db.exec_drop(stmt, (owner, app)) {
+            Err(error)
+        } else {
+            Ok(true)
+        }
+    } else {
+        Err(r.unwrap_err())
+    }
+}

@@ -83,4 +83,48 @@ pub async fn get_apps(
     }
 }
 
-pub fn delete_app(res: &mut Response) {}
+#[derive(serde::Deserialize)]
+struct DeleteAppRequest {
+    id: u32,
+}
+
+#[handler]
+pub async fn delete_app(
+    req: &mut Request,
+    res: &mut Response,
+    depot: &mut Depot,
+) -> Result<Ok, ApiError> {
+    let authcat = depot.get_typed::<AuthCat>().unwrap();
+    let auth = require_authenticated(req, res, authcat).await;
+
+    if let Ok(user) = auth {
+        let db = depot.get_typed::<Pool>().unwrap();
+
+        let body: DeleteAppRequest;
+        match req.parse_json::<DeleteAppRequest>().await {
+            Ok(v) => body = v,
+            Err(e) => {
+                res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
+                return Err(ApiError::ParseError(e));
+            }
+        }
+
+        match db.get_conn() {
+            Ok(mut conn) => {
+                if let Err(error) = db::delete_app(&mut conn, &body.id, &user.id) {
+                    res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
+                    Err(ApiError::SqlError(error))
+                } else {
+                    Ok(Ok {})
+                }
+            }
+            Err(error) => {
+                res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
+                Err(ApiError::SqlError(error))
+            }
+        }
+    } else {
+        res.status_code(StatusCode::UNAUTHORIZED);
+        Err(ApiError::AuthError(auth.unwrap_err()))
+    }
+}

@@ -4,7 +4,7 @@ use mysql::Pool;
 use salvo::prelude::*;
 
 use crate::{
-    apps::endpoints::{get_apps, new_app},
+    apps::endpoints::{delete_app, get_apps, new_app},
     authcat::AuthCat,
 };
 
@@ -51,7 +51,12 @@ async fn main() {
 
     let router = Router::new()
         .hoop(affix_state::inject(authcat).inject(db_pool))
-        .push(Router::with_path("/api/apps").put(new_app).get(get_apps));
+        .push(
+            Router::with_path("/api/apps")
+                .put(new_app)
+                .get(get_apps)
+                .delete(delete_app),
+        );
 
     Server::new(acceptor).serve(router).await;
 }
