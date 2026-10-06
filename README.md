@@ -17,7 +17,7 @@ the body will contain a textual description of the error.
 Apps are the key object of DataCat, services are linked to apps. The endpoints in this section
 provide options for managing your apps.
 
-#### /api/apps
+#### `/api/apps`
 
 Requires user authentication via a `Bearer` token.
 
@@ -72,4 +72,93 @@ Delete an app. Note that the authenticated user must own the app in order to del
 
 ```
 200 OK
+```
+
+### Groups
+
+Most of these endpoints require user authentication, unless otherwise specified.
+
+#### `/api/groups`
+
+##### `GET`
+
+Get the groups the authenticated users owns / is a member of.
+
+###### Response
+
+```json
+{
+  "owned": [
+    {
+      "id": ...,
+      "name": ...,
+      "owner": ...,
+    }, ...
+  ],
+  "member": [
+    {
+      "id": ...,
+      "name": ...,
+      "owner": ...,
+    }, ...
+  ]
+}
+```
+
+##### `PUT`
+
+Create a new group.
+
+###### Body
+
+```json
+{
+  "name": ...
+}
+```
+
+#### `/api/groups/invite`
+
+##### `POST`
+
+###### Query
+
+- `token`: The invite token
+
+###### Body
+
+```json
+{
+  "action": ..., // MUST be either "accept" or "decline"
+}
+```
+
+#### `/api/groups/{id}`
+
+##### `DELETE`
+
+Delete the group, note that you must be authenticated as the group owner to succeed.
+
+#### `/api/groups/{id}/members`
+
+##### `GET`
+
+Get a list of the members of the group. You do _NOT_ need to be authenticated for this request.
+
+##### `DELETE`
+
+Leave the group.
+
+#### `/api/groups/{id}/invite`
+
+##### `PUT`
+
+Invite a user to the group. You must be authenticated as the group owner.
+
+###### Body
+
+```json
+{
+  "username": ..., // The username of the user you want to invite.
+}
 ```
