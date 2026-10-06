@@ -55,6 +55,7 @@ async fn main() {
         OptsBuilder::new()
             .user(Some("data"))
             .pass(Some(""))
+            .db_name(Some("DataCat"))
             .secure_auth(false),
     )
     .unwrap();
