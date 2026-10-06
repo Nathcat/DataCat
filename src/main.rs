@@ -1,6 +1,6 @@
 use std::process::exit;
 
-use mysql::Pool;
+use mysql::{OptsBuilder, Pool};
 use salvo::prelude::*;
 
 use crate::{
@@ -51,7 +51,13 @@ async fn main() {
     println!("{:#?}", db_config);
 
     // Create DB connection pool
-    let db_pool = Pool::new(&db_config.db_url[..]).unwrap();
+    let db_pool = Pool::new(
+        OptsBuilder::new()
+            .user(Some("data"))
+            .pass(Some(""))
+            .secure_auth(false),
+    )
+    .unwrap();
 
     // Init server
     let acceptor = TcpListener::new("127.0.0.1:10000").bind().await;
