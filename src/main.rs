@@ -54,7 +54,7 @@ async fn main() {
     let db_pool = Pool::new(&db_config.db_url[..]).unwrap();
 
     // Init server
-    let acceptor = TcpListener::new("127.0.0.1:8080").bind().await;
+    let acceptor = TcpListener::new("127.0.0.1:10000").bind().await;
 
     let router = Router::new()
         .hoop(affix_state::inject(authcat).inject(db_pool))
