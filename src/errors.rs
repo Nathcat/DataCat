@@ -19,6 +19,7 @@ pub enum ApiError {
     BadRequest(),
     RemoteError(#[from] reqwest::Error),
     NotFound(),
+    Unspecified(),
 }
 
 impl std::fmt::Display for ApiError {
@@ -35,6 +36,7 @@ impl std::fmt::Display for ApiError {
                 ApiError::BadRequest() => "BadRequest",
                 ApiError::RemoteError(_) => "RemoteError",
                 ApiError::NotFound() => "NotFound",
+                ApiError::Unspecified() => "Unspecified",
             },
             match self.source() {
                 Some(e) => e.to_string(),

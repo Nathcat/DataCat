@@ -48,3 +48,18 @@ pub fn delete_app(db: &mut PooledConn, app: &u32, owner: &i32) -> Result<bool, m
         Err(r.unwrap_err())
     }
 }
+
+pub fn get_app(db: &mut PooledConn, app: &u32, api_key: &String) -> Result<Vec<App>, mysql::Error> {
+    let r = db.prep("SELECT * FROM `Apps` WHERE `id` = ? AND `apiKey` = ?");
+
+    if let Ok(stmt) = r {
+        db.exec_map(stmt, (app, api_key), |(id, owner, name, apiKey)| App {
+            id,
+            owner,
+            name,
+            apiKey,
+        })
+    } else {
+        Err(r.unwrap_err())
+    }
+}

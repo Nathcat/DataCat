@@ -10,6 +10,7 @@ use crate::{
         create_group, delete_group, get_group_members, get_groups, invite_action, invite_to_group,
         leave_group,
     },
+    leaderboards::endpoints::{delete_leaderboard, edit_record, get_state, new_leaderboard},
 };
 
 pub mod apps;
@@ -18,6 +19,7 @@ pub mod config;
 pub mod db;
 pub mod errors;
 pub mod groups;
+pub mod leaderboards;
 pub mod responses;
 
 #[tokio::main]
@@ -79,6 +81,14 @@ async fn main() {
                                 )
                                 .push(Router::with_path("invite").put(invite_to_group)),
                         ),
+                )
+                .push(
+                    Router::with_path("leaderboards").put(new_leaderboard).push(
+                        Router::with_path("{id}")
+                            .get(get_state)
+                            .post(edit_record)
+                            .delete(delete_leaderboard),
+                    ),
                 ),
         );
 

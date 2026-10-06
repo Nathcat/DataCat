@@ -162,3 +162,58 @@ Invite a user to the group. You must be authenticated as the group owner.
   "username": ..., // The username of the user you want to invite.
 }
 ```
+
+### Leaderboards
+
+These endpoints require application authentication via `Basic` authentication.
+
+One must specify:
+
+```
+Authorization: Basic <app_id>:<api_key>
+```
+
+In their request headers.
+
+#### `/api/leaderboards`
+
+##### `PUT`
+
+Create a new leaderboard.
+
+###### Body
+
+```json
+{
+  "name": ...
+}
+```
+
+#### `/api/leaderboards/{id}`
+
+##### `GET`
+
+Get the records on the leaderboard.
+
+###### Query
+
+- `ascending`: Whether or not the records should be in ascending order. Defaults to true.
+- `limit`: The maximum number of records which should be returned. Defaults to 10.
+
+##### `DELETE`
+
+Delete the leaderboard.
+
+##### `POST`
+
+Create or edit the leaderboard record.
+
+###### Body
+
+```json
+{
+  "user": ..., // The ID of the user the record refers to
+  "increment": ..., // OPTIONAL: true / false. If not specified, the record will be set to <value>, if true, the record will be incremented by <value>, if false, it will be decremented by <value>. If the record does not already exist, it is initialised with <value>.
+  "value": ..., // OPTIONAL: The value to edit the record with. If not set, defaults to 1
+}
+```
