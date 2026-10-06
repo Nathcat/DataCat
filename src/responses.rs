@@ -16,11 +16,11 @@ impl Writer for Ok {
     }
 }
 
-/// Wraps a Vec to be written as JSON in a response
-pub struct JsonVec<T: serde::Serialize + std::marker::Send>(pub Vec<T>);
+/// Wraps a generic object to be written as JSON in a response
+pub struct JsonObj<T: serde::Serialize + std::marker::Send>(pub T);
 
 #[async_trait]
-impl<T: serde::Serialize + std::marker::Send> Writer for JsonVec<T> {
+impl<T: serde::Serialize + std::marker::Send> Writer for JsonObj<T> {
     async fn write(self, _req: &mut Request, _depot: &mut Depot, res: &mut Response) {
         match serde_json::to_string(&self.0) {
             Ok(result) => {

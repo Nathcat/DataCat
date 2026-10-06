@@ -21,3 +21,4 @@ reqwest = { version = "0.13.5", features = ["blocking", "json"] }
 
 regex = "1.13.1"
 thiserror = "2.0.21"
+futures = "0.3.34"

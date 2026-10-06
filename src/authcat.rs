@@ -1,7 +1,9 @@
 use core::fmt;
 use std::error::Error;
 
+use futures::future::join_all;
 use regex::regex;
+use reqwest::Client;
 use salvo::prelude::*;
 
 use serde::Deserialize;
@@ -17,12 +19,22 @@ pub struct AuthCat {
 #[allow(non_snake_case)]
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
 pub struct User {
-    pub id: u32,
+    pub id: i32,
     pub username: String,
     pub fullName: String,
     pub email: String,
     pub pfpPath: String,
-    pub verified: u8,
+    pub verified: i8,
+}
+
+#[allow(non_snake_case)]
+#[derive(Serialize, Deserialize, Default, Clone, Debug)]
+pub struct UserNoEmail {
+    pub id: i32,
+    pub username: String,
+    pub fullName: String,
+    pub pfpPath: String,
+    pub verified: i8,
 }
 
 #[derive(Debug)]
@@ -117,4 +129,34 @@ pub async fn require_authenticated(
     }
 
     authcat.authenticate_token(&token).await
+}
+
+pub async fn get_users_by_param<T: std::fmt::Display>(
+    param_name: String,
+    values: &Vec<T>,
+) -> Vec<Result<Vec<UserNoEmail>, reqwest::Error>> {
+    let mut base_url = String::from("https://auth.nathcat.net/user?");
+    base_url.push_str(&param_name);
+    base_url.push_str("=");
+
+    let client = Client::new();
+
+    let mut futures = Vec::new();
+    for value in values.iter() {
+        let mut url = base_url.clone();
+        url.push_str(&value.to_string());
+
+        futures.push(client.get(url).send());
+    }
+
+    // Why in the name of god must rust have async.
+    join_all(
+        join_all(futures)
+            .await
+            .into_iter()
+            .map(|res| res.unwrap().json::<Vec<UserNoEmail>>()),
+    )
+    .await
+    .into_iter()
+    .collect()
 }

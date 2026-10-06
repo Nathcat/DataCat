@@ -6,6 +6,10 @@ use salvo::prelude::*;
 use crate::{
     apps::endpoints::{delete_app, get_apps, new_app},
     authcat::AuthCat,
+    groups::endpoints::{
+        create_group, delete_group, get_group_members, get_groups, invite_action, invite_to_group,
+        leave_group,
+    },
 };
 
 pub mod apps;
@@ -13,6 +17,7 @@ pub mod authcat;
 pub mod config;
 pub mod db;
 pub mod errors;
+pub mod groups;
 pub mod responses;
 
 #[tokio::main]
@@ -52,10 +57,29 @@ async fn main() {
     let router = Router::new()
         .hoop(affix_state::inject(authcat).inject(db_pool))
         .push(
-            Router::with_path("/api/apps")
-                .put(new_app)
-                .get(get_apps)
-                .delete(delete_app),
+            Router::with_path("api")
+                .push(
+                    Router::with_path("apps")
+                        .put(new_app)
+                        .get(get_apps)
+                        .delete(delete_app),
+                )
+                .push(
+                    Router::with_path("groups")
+                        .put(create_group)
+                        .get(get_groups)
+                        .push(Router::with_path("invite").post(invite_action))
+                        .push(
+                            Router::with_path("{id}")
+                                .delete(delete_group)
+                                .push(
+                                    Router::with_path("members")
+                                        .get(get_group_members)
+                                        .delete(leave_group),
+                                )
+                                .push(Router::with_path("invite").put(invite_to_group)),
+                        ),
+                ),
         );
 
     Server::new(acceptor).serve(router).await;

@@ -5,7 +5,7 @@ use serde::Deserialize;
 use crate::apps::{App, db};
 use crate::authcat::{AuthCat, require_authenticated};
 use crate::errors::ApiError;
-use crate::responses::{JsonVec, Ok};
+use crate::responses::{JsonObj, Ok};
 
 #[derive(Deserialize)]
 struct NewAppRequest {
@@ -57,7 +57,7 @@ pub async fn get_apps(
     req: &mut Request,
     res: &mut Response,
     depot: &mut Depot,
-) -> Result<JsonVec<App>, ApiError> {
+) -> Result<JsonObj<Vec<App>>, ApiError> {
     let authcat = depot.get_typed::<AuthCat>().unwrap();
     let auth = require_authenticated(req, res, authcat).await;
 
@@ -71,7 +71,7 @@ pub async fn get_apps(
                     res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
                     Err(ApiError::SqlError(e))
                 }
-                Ok(v) => Ok(JsonVec(v)),
+                Ok(v) => Ok(JsonObj(v)),
             }
         } else {
             res.status_code(StatusCode::INTERNAL_SERVER_ERROR);

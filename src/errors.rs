@@ -15,6 +15,10 @@ pub enum ApiError {
     ParseError(#[from] ParseError),
     SqlError(#[from] mysql::error::Error),
     SerdeJsonError(#[from] serde_json::Error),
+    NotImplemented(),
+    BadRequest(),
+    RemoteError(#[from] reqwest::Error),
+    NotFound(),
 }
 
 impl std::fmt::Display for ApiError {
@@ -27,6 +31,10 @@ impl std::fmt::Display for ApiError {
                 ApiError::ParseError(_) => "ParseError",
                 ApiError::SqlError(_) => "SqlError",
                 ApiError::SerdeJsonError(_) => "SerdeJsonError",
+                ApiError::NotImplemented() => "NotImplemented",
+                ApiError::BadRequest() => "BadRequest",
+                ApiError::RemoteError(_) => "RemoteError",
+                ApiError::NotFound() => "NotFound",
             },
             match self.source() {
                 Some(e) => e.to_string(),

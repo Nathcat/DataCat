@@ -2,7 +2,7 @@ use mysql::{PooledConn, Statement, prelude::Queryable};
 
 use crate::apps::App;
 
-pub fn create_app(db: &mut PooledConn, name: &String, owner: &u32) -> Result<bool, mysql::Error> {
+pub fn create_app(db: &mut PooledConn, name: &String, owner: &i32) -> Result<bool, mysql::Error> {
     let r =
         db.prep("INSERT INTO Apps (`owner`, `name`, `apiKey`) VALUES (?, ?, SHA2(UUID(), 256))");
 
@@ -20,7 +20,7 @@ pub fn create_app(db: &mut PooledConn, name: &String, owner: &u32) -> Result<boo
     }
 }
 
-pub fn get_apps_owned_by(db: &mut PooledConn, owner: &u32) -> Result<Vec<App>, mysql::Error> {
+pub fn get_apps_owned_by(db: &mut PooledConn, owner: &i32) -> Result<Vec<App>, mysql::Error> {
     let r = db.prep("SELECT * FROM Apps WHERE `owner` = ?");
 
     if let Ok(stmt) = r {
@@ -35,7 +35,7 @@ pub fn get_apps_owned_by(db: &mut PooledConn, owner: &u32) -> Result<Vec<App>, m
     }
 }
 
-pub fn delete_app(db: &mut PooledConn, app: &u32, owner: &u32) -> Result<bool, mysql::Error> {
+pub fn delete_app(db: &mut PooledConn, app: &u32, owner: &i32) -> Result<bool, mysql::Error> {
     let r = db.prep("DELETE FROM Apps WHERE `owner` = ? AND `id` = ?");
 
     if let Ok(stmt) = r {
