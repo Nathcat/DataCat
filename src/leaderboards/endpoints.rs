@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, error::Error};
 
 use mysql::{Pool, PooledConn};
 use salvo::prelude::*;
@@ -99,6 +99,11 @@ pub async fn get_state(
 
                 for user_res in users.into_iter() {
                     if let Err(e) = user_res {
+                        eprintln!("Error while getting user: {}", e.to_string());
+                        if let Some(e) = e.source() {
+                            eprintln!("Source: {}", e.to_string());
+                        }
+
                         return Err(ApiError::Unspecified());
                     }
 
