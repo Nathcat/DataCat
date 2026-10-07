@@ -157,7 +157,7 @@ pub async fn get_group_members(
                 Err(ApiError::SqlError(e))
             }
             Ok(v) => {
-                let r = get_users_by_param::<u32>(String::from("id"), &v).await;
+                let r = get_users_by_param::<u32, u32>(String::from("id"), &v).await;
                 let mut users: Vec<UserNoEmail> = Vec::new();
                 r.into_iter().into_iter().for_each(|result| match result {
                     Err(e) => eprintln!("{}", e.source().unwrap().to_string()),
@@ -224,8 +224,11 @@ pub async fn invite_to_group(
                 return Err(ApiError::BadRequest());
             }
 
-            let users_with_username =
-                get_users_by_param::<String>(String::from("username"), &vec![body.username]).await;
+            let users_with_username = get_users_by_param::<String, String>(
+                String::from("username"),
+                &vec![body.username],
+            )
+            .await;
             let mut invitees: Vec<UserNoEmail> = Vec::new();
             users_with_username
                 .into_iter()

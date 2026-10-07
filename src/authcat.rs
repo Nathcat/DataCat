@@ -131,9 +131,25 @@ pub async fn require_authenticated(
     authcat.authenticate_token(&token).await
 }
 
-pub async fn get_users_by_param<T: std::fmt::Display>(
+pub trait UserParamContainer<T: std::fmt::Display> {
+    fn get_param(&self) -> T;
+}
+
+impl UserParamContainer<u32> for u32 {
+    fn get_param(&self) -> u32 {
+        *self
+    }
+}
+
+impl UserParamContainer<String> for String {
+    fn get_param(&self) -> String {
+        self.clone()
+    }
+}
+
+pub async fn get_users_by_param<V: std::fmt::Display, C: UserParamContainer<V>>(
     param_name: String,
-    values: &Vec<T>,
+    values: &Vec<C>,
 ) -> Vec<Result<Vec<UserNoEmail>, reqwest::Error>> {
     let mut base_url = String::from("https://auth.nathcat.net/user?");
     base_url.push_str(&param_name);
@@ -144,7 +160,7 @@ pub async fn get_users_by_param<T: std::fmt::Display>(
     let mut futures = Vec::new();
     for value in values.iter() {
         let mut url = base_url.clone();
-        url.push_str(&value.to_string());
+        url.push_str(&value.get_param().to_string());
 
         futures.push(client.get(url).send());
     }

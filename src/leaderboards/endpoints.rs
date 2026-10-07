@@ -1,8 +1,11 @@
+use std::collections::HashMap;
+
 use mysql::{Pool, PooledConn};
 use salvo::prelude::*;
 
 use crate::{
     apps::require_app_auth,
+    authcat::{User, UserNoEmail, UserParamContainer, get_users_by_param},
     errors::ApiError,
     leaderboards::{LeaderboardRecord, db},
     responses::{JsonObj, Ok},
@@ -54,12 +57,18 @@ pub async fn new_leaderboard(
     }
 }
 
+#[derive(serde::Serialize)]
+struct LeaderboardRecordResponse {
+    user: UserNoEmail,
+    value: i32,
+}
+
 #[handler]
 pub async fn get_state(
     req: &mut Request,
     res: &mut Response,
     depot: &mut Depot,
-) -> Result<JsonObj<Vec<LeaderboardRecord>>, ApiError> {
+) -> Result<JsonObj<Vec<LeaderboardRecordResponse>>, ApiError> {
     let db = depot.get_typed::<Pool>().unwrap();
 
     let conn = db.get_conn();
@@ -77,7 +86,34 @@ pub async fn get_state(
 
         match db::get_records(&mut conn, &id, &ascending, &limit) {
             Err(e) => Err(ApiError::SqlError(e)),
-            Ok(v) => Ok(JsonObj(v)),
+            Ok(v) => {
+                let users =
+                    get_users_by_param::<i32, LeaderboardRecord>(String::from("id"), &v).await;
+
+                let mut values: HashMap<i32, i32> = HashMap::new();
+                for record in v {
+                    values.insert(record.user, record.value);
+                }
+
+                let mut result: Vec<LeaderboardRecordResponse> = Vec::new();
+
+                for user_res in users.into_iter() {
+                    if let Err(e) = user_res {
+                        return Err(ApiError::Unspecified());
+                    }
+
+                    let user = user_res.unwrap();
+                    if user.len() == 0 {
+                        return Err(ApiError::NotFound());
+                    }
+
+                    result.push(LeaderboardRecordResponse {
+                        user: user[0].clone(),
+                        value: *values.get(&user[0].id).unwrap(),
+                    })
+                }
+                Ok(JsonObj(result))
+            }
         }
     } else {
         res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
