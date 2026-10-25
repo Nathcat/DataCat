@@ -10,7 +10,9 @@ use crate::{
         create_group, delete_group, get_group_members, get_groups, invite_action, invite_to_group,
         leave_group,
     },
-    leaderboards::endpoints::{delete_leaderboard, edit_record, get_state, new_leaderboard},
+    leaderboards::endpoints::{
+        delete_leaderboard, edit_record, get_leaderboards, get_state, new_leaderboard,
+    },
 };
 
 pub mod apps;
@@ -83,12 +85,15 @@ async fn main() {
                         ),
                 )
                 .push(
-                    Router::with_path("leaderboards").put(new_leaderboard).push(
-                        Router::with_path("{id}")
-                            .get(get_state)
-                            .post(edit_record)
-                            .delete(delete_leaderboard),
-                    ),
+                    Router::with_path("leaderboards")
+                        .get(get_leaderboards)
+                        .put(new_leaderboard)
+                        .push(
+                            Router::with_path("{id}")
+                                .get(get_state)
+                                .post(edit_record)
+                                .delete(delete_leaderboard),
+                        ),
                 ),
         );
 

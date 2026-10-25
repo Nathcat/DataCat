@@ -1,6 +1,6 @@
 use mysql::{PooledConn, prelude::Queryable};
 
-use crate::leaderboards::LeaderboardRecord;
+use crate::leaderboards::{Leaderboard, LeaderboardRecord};
 
 pub fn create_leaderboard(
     db: &mut PooledConn,
@@ -86,6 +86,20 @@ pub fn edit_record(
             stmt,
             (leaderboard, user, value.unwrap_or(1), value.unwrap_or(1)),
         )
+    } else {
+        Err(r.unwrap_err())
+    }
+}
+
+pub fn get_leaderboards(db: &mut PooledConn, app: &u32) -> Result<Vec<Leaderboard>, mysql::Error> {
+    let r = db.prep("SELECT * FROM `Leaderboards` WHERE `app` = ?");
+
+    if let Ok(stmt) = r {
+        return db.exec_map(stmt, (app,), |(id, app, name)| Leaderboard {
+            id,
+            app,
+            name,
+        });
     } else {
         Err(r.unwrap_err())
     }

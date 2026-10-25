@@ -3,7 +3,7 @@ use crate::authcat::UserParamContainer;
 pub mod db;
 pub mod endpoints;
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, serde::Serialize)]
 pub struct Leaderboard {
     pub id: u32,
     pub app: u32,

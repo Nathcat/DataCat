@@ -7,7 +7,7 @@ use crate::{
     apps::require_app_auth,
     authcat::{User, UserNoEmail, UserParamContainer, get_users_by_param},
     errors::ApiError,
-    leaderboards::{LeaderboardRecord, db},
+    leaderboards::{Leaderboard, LeaderboardRecord, db},
     responses::{JsonObj, Ok},
 };
 
@@ -218,6 +218,36 @@ pub async fn delete_leaderboard(
                 Err(ApiError::SqlError(e))
             } else {
                 Ok(Ok {})
+            }
+        } else {
+            res.status_code(StatusCode::UNAUTHORIZED);
+            Err(ApiError::Unspecified())
+        }
+    } else {
+        res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
+        Err(ApiError::SqlError(conn.unwrap_err()))
+    }
+}
+
+#[handler]
+pub fn get_leaderboards(
+    req: &mut Request,
+    res: &mut Response,
+    depot: &mut Depot,
+) -> Result<JsonObj<Vec<Leaderboard>>, ApiError> {
+    let db = depot.get_typed::<Pool>().unwrap();
+
+    let conn = db.get_conn();
+    if let Ok(mut conn) = conn {
+        if let Some(v) = require_app_auth(&mut conn, req, res) {
+            if v.len() == 0 {
+                res.status_code(StatusCode::UNAUTHORIZED);
+                return Err(ApiError::Unspecified());
+            }
+
+            match db::get_leaderboards(&mut conn, &v[0].id) {
+                Err(e) => Err(ApiError::SqlError(e)),
+                Ok(v) => Ok(JsonObj(v)),
             }
         } else {
             res.status_code(StatusCode::UNAUTHORIZED);
