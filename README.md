@@ -177,6 +177,10 @@ In their request headers.
 
 #### `/api/leaderboards`
 
+##### GET
+
+Get the leaderboards attached to the authenticated app.
+
 ##### `PUT`
 
 Create a new leaderboard.
